@@ -1,69 +1,127 @@
-import Container from "../ui/Container";
-import SectionHeader from "../ui/SectionHeader";
-import AnimatedSection from "../animations/AnimatedSection";
-import StaggerContainer, { StaggerItem } from "../animations/StaggerContainer";
-import { education } from "../../data/portfolio";
-
-const focusAreas = [
-  { label: "Mobile Engineering", desc: "Building cross-platform React Native applications with native performance and delightful UX." },
-  { label: "Full-Stack Development", desc: "Crafting end-to-end solutions from database schema to responsive UI." },
-  { label: "System Thinking", desc: "Designing scalable architectures with clean separation of concerns." },
-  { label: "Cloud Architecture", desc: "Deploying and managing infrastructure on AWS with DevOps best practices." },
-];
+import { motion } from "framer-motion";
+import { Smartphone, Globe, Code2, Cloud, Download } from "lucide-react";
+import { personal } from "../../data/portfolio";
 
 export default function About() {
   return (
-    <Container id="about">
-      <AnimatedSection>
-        <SectionHeader
-          label="About"
-          title="Engineering experiences that span the full stack"
-          description="From my first React Native app to architecting cloud infrastructure — here's my journey."
-        />
-      </AnimatedSection>
+    <section id="about" className="py-20 relative">
+      <div className="max-w-6xl mx-auto px-4 text-left">
+        <div className="grid lg:grid-cols-12 gap-10 items-center">
+          {/* Left Bio Highlights */}
+          <motion.div
+            className="lg:col-span-7 space-y-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="text-xs font-mono px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary-light font-medium">
+              Background & Principles
+            </span>
 
-      <div className="mt-12 grid lg:grid-cols-5 gap-8">
-        <AnimatedSection className="lg:col-span-3" delay={0.1}>
-          <div className="rounded-2xl border border-border bg-surface p-6 md:p-8">
-            <p className="text-text-secondary leading-relaxed">
-              My journey began with{" "}
-              <span className="text-text font-medium">React Native</span> — I was drawn to the idea of building applications that work across platforms with a single codebase. What started as curiosity quickly became a deep focus on mobile engineering.
-            </p>
-            <p className="mt-4 text-text-secondary leading-relaxed">
-              As I built more apps, I realized great mobile experiences need equally great backends. This pushed me into{" "}
-              <span className="text-text font-medium">full-stack development</span> — designing APIs, managing databases, and implementing authentication systems that scale.
-            </p>
-            <p className="mt-4 text-text-secondary leading-relaxed">
-              Today, I focus on the entire spectrum: from pixel-perfect React Native interfaces to scalable cloud infrastructure on AWS. I believe in{" "}
-              <span className="text-text font-medium">system thinking</span> — understanding how every piece connects from the mobile client all the way to the cloud.
-            </p>
-            <div className="mt-6 pt-4 border-t border-border">
-              <p className="text-xs text-text-muted uppercase tracking-wider font-medium mb-2">Education</p>
-              {education.map((edu) => (
-                <p key={edu.degree} className="text-sm text-text-secondary">
-                  <span className="text-text font-medium">{edu.degree}</span> — {edu.institution} ({edu.year})
-                </p>
-              ))}
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+              Engineering Mobile & Full-Stack Systems
+            </h2>
+
+            <div className="space-y-4 text-sm text-text-secondary leading-relaxed">
+              <p>
+                Software Engineer specializing in cross-platform <strong className="text-text">React Native & Expo</strong> mobile applications, <strong className="text-text">PostgreSQL & MERN</strong> full-stack portals, and high-performance <strong className="text-text">FastAPI Python</strong> microservices.
+              </p>
             </div>
-          </div>
-        </AnimatedSection>
 
-        <AnimatedSection className="lg:col-span-2" delay={0.2}>
-          <div className="rounded-2xl border border-border bg-surface p-5">
-            <p className="text-sm font-medium text-text mb-3">Focus Areas</p>
-            <StaggerContainer stagger={0.08}>
-              {focusAreas.map((area) => (
-                <StaggerItem key={area.label}>
-                  <div className="py-2 border-b border-border last:border-0">
-                    <p className="text-sm font-medium text-text">{area.label}</p>
-                    <p className="text-xs text-text-secondary mt-0.5">{area.desc}</p>
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </div>
-        </AnimatedSection>
+            {/* Engineering Pillars */}
+            <div className="grid sm:grid-cols-2 gap-4 pt-2">
+              <div className="p-4 rounded-2xl bg-surface border border-border space-y-1 glow-card">
+                <div className="text-sm font-bold text-text flex items-center gap-2">
+                  <Smartphone className="w-4 h-4 text-indigo-400" />
+                  <span>Mobile Applications</span>
+                </div>
+                <p className="text-xs text-text-muted">
+                  React Native & Expo with SQLite offline storage and push notifications.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-surface border border-border space-y-1 glow-card">
+                <div className="text-sm font-bold text-text flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-purple-400" />
+                  <span>Full-Stack Monorepos</span>
+                </div>
+                <p className="text-xs text-text-muted">
+                  PostgreSQL, Express, Next.js, and Node.js multi-portal systems.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-surface border border-border space-y-1 glow-card">
+                <div className="text-sm font-bold text-text flex items-center gap-2">
+                  <Code2 className="w-4 h-4 text-cyan-400" />
+                  <span>Python & AI Services</span>
+                </div>
+                <p className="text-xs text-text-muted">
+                  FastAPI microservices, PyTorch inference, and Gemini LLM RAG.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-surface border border-border space-y-1 glow-card">
+                <div className="text-sm font-bold text-text flex items-center gap-2">
+                  <Cloud className="w-4 h-4 text-amber-400" />
+                  <span>Cloud Infrastructure</span>
+                </div>
+                <p className="text-xs text-text-muted">
+                  AWS deployment, Docker containerization, and GitHub Actions CI/CD.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Profile Info Card */}
+          <motion.div
+            className="lg:col-span-5"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="rounded-3xl border border-border glass-panel p-6 sm:p-8 space-y-6 shadow-2xl relative overflow-hidden">
+              <div className="flex items-center gap-4 border-b border-border pb-6">
+                <div className="w-14 h-14 rounded-2xl bg-primary/20 border border-primary/40 flex items-center justify-center font-mono font-bold text-primary text-xl">
+                  MS
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-text">{personal.name}</h3>
+                  <p className="text-xs font-mono text-primary-light">{personal.title}</p>
+                </div>
+              </div>
+
+              <div className="space-y-3 text-xs">
+                <div className="flex justify-between py-1 border-b border-border/60">
+                  <span className="text-text-muted">Location</span>
+                  <span className="font-semibold text-text">{personal.location}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-border/60">
+                  <span className="text-text-muted">Primary Focus</span>
+                  <span className="font-semibold text-primary-light">React Native & Expo</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span className="text-text-muted">Database</span>
+                  <span className="font-semibold text-cyan-400">PostgreSQL</span>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <a
+                  href={personal.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 w-full text-center rounded-xl bg-primary hover:bg-primary-light py-3 text-xs font-semibold text-white transition-all shadow-md active:scale-95"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Download Resume PDF
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
-    </Container>
+    </section>
   );
 }

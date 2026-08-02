@@ -1,140 +1,128 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import Container from "../ui/Container";
-import SectionHeader from "../ui/SectionHeader";
-import Badge from "../ui/Badge";
-import TechPill from "../ui/TechPill";
-import { projects } from "../../data/portfolio";
-import AnimatedSection from "../animations/AnimatedSection";
-import StaggerContainer, { StaggerItem } from "../animations/StaggerContainer";
-import { cn } from "../../lib/utils";
-
-function ProjectCard({ project }: { project: typeof projects[number] }) {
-  return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      className={cn(
-        "rounded-2xl border border-border bg-surface p-6 md:p-8 transition-colors hover:bg-surface-elevated",
-        project.featured && "md:col-span-2"
-      )}
-    >
-      <div className="flex items-start justify-between gap-4 mb-4">
-        <div>
-          <div className="flex items-center gap-3 mb-1">
-            <h3 className="text-xl font-bold">{project.title}</h3>
-            <Badge
-              variant={project.status === "Live" ? "success" : project.status === "In Development" ? "warning" : "default"}
-            >
-              {project.status}
-            </Badge>
-          </div>
-          <p className="text-text-secondary text-sm">{project.tagline}</p>
-        </div>
-      </div>
-
-      <div className={cn("grid gap-6", project.featured ? "md:grid-cols-2" : "grid-cols-1")}>
-        <div className="space-y-4">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-text-muted mb-1">Problem</p>
-            <p className="text-sm text-text-secondary leading-relaxed">{project.problem}</p>
-          </div>
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-text-muted mb-1">Solution</p>
-            <p className="text-sm text-text-secondary leading-relaxed">{project.solution}</p>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          {project.architecture && (
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-text-muted mb-1">Architecture</p>
-              <p className="text-sm text-text-secondary leading-relaxed font-mono">{project.architecture}</p>
-            </div>
-          )}
-
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-text-muted mb-2">Technologies</p>
-            <div className="flex flex-wrap gap-2">
-              {project.technologies.map((tech) => (
-                <TechPill key={tech} label={tech} />
-              ))}
-            </div>
-          </div>
-
-          {project.challenges && (
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-text-muted mb-1">Challenges</p>
-              <ul className="space-y-1">
-                {project.challenges.map((c) => (
-                  <li key={c} className="text-sm text-text-secondary flex items-start gap-2">
-                    <span className="text-primary-light mt-1">•</span>
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div className="flex items-center gap-3 pt-2">
-            {project.github && project.github !== "#" && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-elevated transition-colors"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                Source Code
-              </a>
-            )}
-            {project.demo && (
-              <a
-                href={project.demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-all"
-              >
-                Live Demo
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 7H13M13 7L7 1M13 7L7 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </a>
-            )}
-            {project.demo && project.status === "Live" && (
-              <p className="text-xs text-text-muted">Hosted on Render (may cold-start ~30s)</p>
-            )}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+import { projects, type Project } from "../../data/portfolio";
+import ProjectModal from "../ui/ProjectModal";
 
 export default function Projects() {
-  const [featured, ...rest] = projects;
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  const categories = ["All", "Mobile Apps & AI", "Full-Stack Monorepos", "MERN Stack"];
+
+  const filteredProjects = selectedCategory === "All"
+    ? projects
+    : projects.filter((p) => p.category === selectedCategory);
 
   return (
-    <Container id="projects">
-      <AnimatedSection>
-        <SectionHeader
-          label="Projects"
-          title="Featured work"
-          description="Real applications I've built — from concept to deployment."
-        />
-      </AnimatedSection>
+    <section id="projects" className="py-20 relative">
+      <div className="max-w-6xl mx-auto px-4 text-left">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+          <div className="space-y-2">
+            <span className="text-xs font-mono px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary-light font-medium">
+              Featured Software Engineering Work
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+              Projects & Production Systems
+            </h2>
+            <p className="text-sm text-text-secondary max-w-xl">
+              Showcasing mobile applications, multi-portal monorepos with PostgreSQL, and real-time backend microservices.
+            </p>
+          </div>
 
-      <div className="mt-12 space-y-6">
-        <AnimatedSection delay={0.1}>
-          <ProjectCard project={featured} />
-        </AnimatedSection>
+          {/* Category Filter Tabs */}
+          <div className="flex flex-wrap gap-1.5 p-1 rounded-2xl bg-surface-elevated border border-border">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                  selectedCategory === cat
+                    ? "bg-primary text-white shadow-md"
+                    : "text-text-muted hover:text-text"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
 
-        <StaggerContainer className="grid md:grid-cols-3 gap-4" stagger={0.1}>
-          {rest.map((project) => (
-            <StaggerItem key={project.title}>
-              <ProjectCard project={project} />
-            </StaggerItem>
+        {/* Projects Cards Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProjects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              className="rounded-3xl border border-border bg-surface p-6 flex flex-col justify-between glow-card relative overflow-hidden group cursor-pointer"
+              onClick={() => setSelectedProject(project)}
+            >
+              {/* Card Header & Status */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-primary/15 text-primary-light border border-primary/20 font-medium">
+                    {project.category}
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 font-medium">
+                    {project.status}
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-text group-hover:text-primary transition-colors">
+                  {project.title}
+                </h3>
+                <p className="text-xs font-medium text-text-secondary">
+                  {project.tagline}
+                </p>
+                <p className="text-xs text-text-muted line-clamp-3 leading-relaxed">
+                  {project.problem}
+                </p>
+
+                {/* Portals Preview Pill (FoodyGo Special) */}
+                {project.portals && (
+                  <div className="p-2.5 rounded-xl bg-slate-900/80 border border-amber-500/30 text-[10px] space-y-1">
+                    <span className="font-bold text-amber-400">4 Portals (PostgreSQL):</span>
+                    <div className="text-slate-400">Customer App • Partner App • Admin Web • Restaurant Web</div>
+                  </div>
+                )}
+              </div>
+
+              {/* Card Footer Tech Stack & Details CTA */}
+              <div className="mt-6 pt-4 border-t border-border space-y-3">
+                <div className="flex flex-wrap gap-1">
+                  {project.technologies.slice(0, 4).map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2 py-0.5 rounded-md bg-surface-elevated text-[10px] font-mono text-text-muted border border-border"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                  {project.technologies.length > 4 && (
+                    <span className="px-2 py-0.5 rounded-md bg-surface-elevated text-[10px] font-mono text-text-muted">
+                      +{project.technologies.length - 4}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between text-xs text-primary-light font-medium pt-1">
+                  <span>Architecture Deep Dive ➔</span>
+                  <span className="text-[10px] text-text-muted">Click for Specs</span>
+                </div>
+              </div>
+            </motion.div>
           ))}
-        </StaggerContainer>
+        </div>
       </div>
-    </Container>
+
+      {/* Architectural Modal Overlay */}
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
+    </section>
   );
 }

@@ -1,122 +1,126 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { cn } from "../../lib/utils";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ExternalLink, FileText } from "lucide-react";
 import { personal } from "../../data/portfolio";
-import useActiveSection from "../../hooks/useActiveSection";
-import useTheme from "../../hooks/useTheme";
 import ThemeToggle from "../ui/ThemeToggle";
-import MobileNav from "./MobileNav";
 
-const NAV_ITEMS = [
-  { id: "hero", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "experience", label: "Experience" },
-  { id: "projects", label: "Projects" },
-  { id: "contact", label: "Contact" },
+const navItems = [
+  { label: "Home", href: "#hero" },
+  { label: "Projects", href: "#projects" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const active = useActiveSection();
-  const { mode, cycle } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <>
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-          scrolled && "backdrop-blur-xl bg-bg/80 border-b border-border"
-        )}
-      >
-        <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
-          <button
-            onClick={() => scrollTo("hero")}
-            className="flex items-center gap-2.5"
-          >
-            <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-400 text-[10px] font-bold text-white">
-              M
-            </span>
-            <span className="font-semibold tracking-tight hidden sm:inline">
-              {personal.name}
-            </span>
-          </button>
-
-          <div className="hidden md:flex items-center gap-1 p-1 rounded-full bg-surface border border-border">
-            {NAV_ITEMS.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollTo(item.id)}
-                className={cn(
-                  "relative px-4 py-2 rounded-full text-sm transition-colors",
-                  active === item.id
-                    ? "text-text"
-                    : "text-text-secondary hover:text-text"
-                )}
-              >
-                {active === item.id && (
-                  <motion.span
-                    layoutId="nav-pill"
-                    className="absolute inset-0 rounded-full bg-surface-elevated border border-border"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-                <span className="relative z-10">{item.label}</span>
-              </button>
-            ))}
+    <header
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        scrolled
+          ? "py-3 bg-surface/85 backdrop-blur-md border-b border-border shadow-lg"
+          : "py-5 bg-transparent"
+      }`}
+    >
+      <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
+        {/* Brand Logo */}
+        <a href="#hero" className="flex items-center gap-2.5 group">
+          <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center font-mono font-bold text-primary text-sm group-hover:scale-105 transition-transform">
+            MS
           </div>
+          <span className="text-sm font-bold tracking-tight text-text group-hover:text-primary transition-colors">
+            {personal.name}
+          </span>
+        </a>
 
-          <div className="flex items-center gap-3">
-            <ThemeToggle mode={mode} onCycle={cycle} />
-
+        {/* Desktop Navigation Links */}
+        <nav className="hidden md:flex items-center gap-1.5 bg-surface-elevated/70 border border-border p-1.5 rounded-full backdrop-blur-md">
+          {navItems.map((item) => (
             <a
-              href={personal.resume}
-              className="hidden md:inline-flex rounded-full border border-border px-4 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-elevated transition-colors"
+              key={item.label}
+              href={item.href}
+              className="px-4 py-1.5 rounded-full text-xs font-medium text-text-secondary hover:text-text hover:bg-surface transition-all"
             >
-              Resume
+              {item.label}
             </a>
+          ))}
+        </nav>
 
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden relative w-6 h-6 flex items-center justify-center"
-              aria-label="Toggle menu"
-            >
-              <span className="sr-only">Menu</span>
-              <div className="flex flex-col gap-1.5">
-                <motion.span
-                  animate={mobileOpen ? { rotate: 45, y: 4.5 } : { rotate: 0, y: 0 }}
-                  className="block w-5 h-[1.5px] rounded-full bg-text"
-                />
-                <motion.span
-                  animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
-                  className="block w-5 h-[1.5px] rounded-full bg-text"
-                />
-                <motion.span
-                  animate={mobileOpen ? { rotate: -45, y: -4.5 } : { rotate: 0, y: 0 }}
-                  className="block w-5 h-[1.5px] rounded-full bg-text"
-                />
-              </div>
-            </button>
-          </div>
+        {/* Right Action Controls */}
+        <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
+          <a
+            href={personal.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-primary hover:bg-primary-light px-4 py-2 text-xs font-medium text-white transition-all shadow-md active:scale-95 flex items-center gap-1.5"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            Resume
+            <ExternalLink className="w-3 h-3 opacity-80" />
+          </a>
         </div>
-      </header>
 
-      <MobileNav
-        open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        onNavigate={scrollTo}
-        items={NAV_ITEMS}
-      />
-    </>
+        {/* Mobile Menu Button */}
+        <div className="flex md:hidden items-center gap-2">
+          <ThemeToggle />
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-xl border border-border bg-surface text-text-secondary hover:text-text cursor-pointer"
+            aria-label="Toggle Navigation Menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-surface border-b border-border overflow-hidden px-4 py-4 space-y-3"
+          >
+            <div className="flex flex-col space-y-2 text-left">
+              {navItems.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2 rounded-xl text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-elevated transition-colors"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+            <div className="pt-2 border-t border-border">
+              <a
+                href={personal.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-xs font-medium text-white"
+              >
+                <FileText className="w-4 h-4" />
+                Download Resume PDF
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }

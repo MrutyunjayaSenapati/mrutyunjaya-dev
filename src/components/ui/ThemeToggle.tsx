@@ -1,38 +1,38 @@
-import { motion } from "framer-motion";
-import type { ThemeMode } from "../../hooks/useTheme";
+import { useEffect, useState } from "react";
+import { Sun, Moon } from "lucide-react";
 
-interface ThemeToggleProps {
-  mode: ThemeMode;
-  onCycle: () => void;
-}
+export default function ThemeToggle() {
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("theme") as "dark" | "light" | null;
+      if (saved) return saved;
+    }
+    return "dark";
+  });
 
-const icons: Record<ThemeMode, { icon: string; label: string }> = {
-  system: { icon: "⚙️", label: "System theme" },
-  light: { icon: "☀️", label: "Light theme" },
-  dark: { icon: "🌙", label: "Dark theme" },
-};
+  useEffect(() => {
+    document.documentElement.classList.toggle("light", theme === "light");
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
-export default function ThemeToggle({ mode, onCycle }: ThemeToggleProps) {
-  const current = icons[mode];
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    localStorage.setItem("theme", next);
+  };
 
   return (
     <button
-      onClick={onCycle}
-      className="relative flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-sm text-text-secondary hover:text-text hover:bg-surface-elevated transition-colors"
-      title={current.label}
+      onClick={toggleTheme}
+      className="p-2 rounded-full border border-border bg-surface hover:bg-surface-elevated text-text-secondary hover:text-text transition-colors flex items-center justify-center w-9 h-9 cursor-pointer"
+      aria-label="Toggle dark/light mode"
+      title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
     >
-      <motion.span
-        key={mode}
-        initial={{ scale: 0.5, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.2 }}
-        className="text-sm"
-      >
-        {current.icon}
-      </motion.span>
-      <span className="text-xs font-medium hidden sm:inline">
-        {mode === "system" ? "Auto" : mode === "light" ? "Light" : "Dark"}
-      </span>
+      {theme === "dark" ? (
+        <Sun className="w-4 h-4 text-amber-400 animate-spin-slow" />
+      ) : (
+        <Moon className="w-4 h-4 text-indigo-600" />
+      )}
     </button>
   );
 }

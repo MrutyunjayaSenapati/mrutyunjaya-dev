@@ -1,24 +1,32 @@
 export const personal = {
   name: "Mrutyunjaya Senapati",
-  title: "Software Engineer",
+  title: "Mobile & Full-Stack Software Engineer",
+  tagline: "Building high-performance Mobile Applications & Full-Stack Systems",
   email: "mrutyunjayasenapati007@gmail.com",
   github: "https://github.com/MrutyunjayaSenapati",
   linkedin: "https://www.linkedin.com/in/mrutyunjaya-senapati/",
   resume: "https://drive.google.com/file/d/1i5Q-Y2HXqSUyHzNvLHSX_bpAMV2BeRfn/view?usp=sharing",
   location: "India",
+  status: "Available for Engineering Roles",
 } as const;
 
 export const techPipeline = [
-  { layer: "Mobile App", tech: "React Native", icon: "📱", color: "from-indigo-500 to-indigo-400" },
-  { layer: "Web UI", tech: "Next.js", icon: "🌐", color: "from-purple-500 to-purple-400" },
-  { layer: "Backend API", tech: "Node.js", icon: "⚙️", color: "from-cyan-500 to-cyan-400" },
-  { layer: "Cloud Infra", tech: "AWS", icon: "☁️", color: "from-amber-500 to-amber-400" },
+  { layer: "Mobile App", tech: "React Native / Expo", iconKey: "Smartphone", color: "from-indigo-500 to-indigo-400" },
+  { layer: "Web App & DB", tech: "PostgreSQL / MERN", iconKey: "Globe", color: "from-purple-500 to-purple-400" },
+  { layer: "Python & AI", tech: "FastAPI / PyTorch", iconKey: "Code2", color: "from-cyan-500 to-cyan-400" },
+  { layer: "Cloud Infra", tech: "AWS / Docker", iconKey: "Cloud", color: "from-amber-500 to-amber-400" },
 ] as const;
 
 export const techStack = [
   "React Native",
-  "Next.js",
+  "Expo",
+  "PostgreSQL",
+  "MongoDB",
+  "Express",
+  "React",
   "Node.js",
+  "Python",
+  "FastAPI",
   "AWS",
   "Docker",
   "TypeScript",
@@ -26,28 +34,71 @@ export const techStack = [
 
 export const skills = [
   {
-    category: "Mobile",
-    icon: "📱",
-    items: ["React Native", "Android", "Android Studio", "Push Notifications", "Firebase", "Analytics", "Crashlytics", "Mobile Architecture"],
-    description: "Cross-platform mobile applications with native performance",
+    category: "Mobile App Development",
+    iconKey: "Smartphone",
+    badge: "MOBILE ENGINE",
+    items: [
+      "React Native",
+      "Expo",
+      "Android Studio",
+      "SQLite (Local DB)",
+      "Zustand State",
+      "Push Notifications",
+      "Firebase Analytics",
+      "Crashlytics",
+      "Native Modules",
+    ],
+    description: "Cross-platform mobile engineering with native performance, 60 FPS UI, and offline sync.",
   },
   {
-    category: "Frontend",
-    icon: "⚡",
-    items: ["React", "Next.js", "TypeScript"],
-    description: "Modern web applications with type-safe architecture",
+    category: "Web App & Databases",
+    iconKey: "Globe",
+    badge: "FULL-STACK",
+    items: [
+      "PostgreSQL",
+      "MongoDB",
+      "Express.js",
+      "React.js",
+      "Node.js",
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "shadcn/ui",
+      "Turborepo",
+      "REST APIs",
+    ],
+    description: "Multi-tenant web dashboards, merchant portals, and relational schema architecture.",
   },
   {
-    category: "Backend",
-    icon: "⚙️",
-    items: ["Node.js", "Express", "REST APIs", "Authentication"],
-    description: "Scalable APIs with robust security and data flow",
+    category: "Python Stack & AI",
+    iconKey: "Code2",
+    badge: "AI & SERVICES",
+    items: [
+      "Python",
+      "FastAPI",
+      "PyTorch",
+      "Gemini API (RAG)",
+      "Pydantic Validation",
+      "REST Microservices",
+      "Async Workers",
+    ],
+    description: "High-speed Python microservices, vision inference, and LLM workflow automation.",
   },
   {
-    category: "Cloud",
-    icon: "☁️",
-    items: ["AWS", "Docker", "CI/CD", "Linux", "Firebase"],
-    description: "Infrastructure automation and cloud-native deployments",
+    category: "Cloud & DevOps",
+    iconKey: "Cloud",
+    badge: "INFRASTRUCTURE",
+    items: [
+      "AWS (S3, EC2, Lambda)",
+      "Docker",
+      "GitHub Actions CI/CD",
+      "Linux Administration",
+      "Nginx Proxy",
+      "Supabase",
+      "Firebase",
+      "Git & Postman",
+    ],
+    description: "Containerization, cloud infrastructure deployment, and automated release pipelines.",
   },
 ] as const;
 
@@ -56,22 +107,15 @@ export const experience = [
     year: "Jul 2025 — Present",
     role: "Software Engineer",
     company: "Strivesteam",
-    description: "Building production-grade mobile and full-stack applications. Architecting cloud infrastructure and implementing DevOps best practices. Working across React Native, Node.js, and cloud services.",
-    tags: ["React Native", "Node.js", "AWS", "TypeScript", "Firebase", "Crashlytics"],
+    description: "Engineering production mobile applications and full-stack systems with React Native, Node.js, Python, and AWS.",
+    tags: ["React Native", "Expo", "Node.js", "Python", "AWS", "TypeScript"],
   },
   {
-    year: "May 2025 — Jun 2025",
+    year: "May 2025 — Jul 2025",
     role: "Developer",
     company: "Ciya Technology",
-    description: "Short-term engagement focused on mobile development, backend API integration, and delivering production-ready features.",
-    tags: ["React Native", "Node.js", "Android Studio", "Firebase"],
-  },
-  {
-    year: "Aug 2024 — Apr 2025",
-    role: "Intern",
-    company: "Naresh IT",
-    description: "Full-stack development internship. Built real-world projects, learned production workflows, and transitioned from academic to professional engineering.",
-    tags: ["React", "Node.js", "JavaScript", "MongoDB", "REST APIs"],
+    description: "Focused on React Native mobile UI components, backend REST API integrations, and feature delivery.",
+    tags: ["React Native", "Android Studio", "Node.js", "Firebase"],
   },
 ] as const;
 
@@ -79,94 +123,123 @@ export const education = [
   {
     degree: "Master of Computer Applications (MCA)",
     year: "2022 - 2024",
-    institution: "College of IT and Management Education(CIME),Bhubaneswar",
+    institution: "College of IT and Management Education (CIME), Bhubaneswar",
   },
 ] as const;
 
-export const projects = [
+export interface Project {
+  id: string;
+  title: string;
+  tagline: string;
+  featured: boolean;
+  category: "Mobile Apps & AI" | "Full-Stack Monorepos" | "MERN Stack";
+  status: "Live Project" | "Complete" | "In Development";
+  problem: string;
+  solution: string;
+  architecture: string;
+  portals?: string[];
+  database: string;
+  technologies: string[];
+  challenges: string[];
+  github: string;
+  demo?: string | null;
+}
+
+export const projects: Project[] = [
   {
-    title: "FitLens",
-    tagline: "Fitness Platform",
+    id: "plant-doctor",
+    title: "PlantDoctor AI",
+    tagline: "AI Agricultural & Leaf Disease Diagnosis Mobile App",
     featured: true,
-    status: "In Development",
-    problem: "Fitness tracking and health management are fragmented across multiple platforms. Users lack a unified solution that combines workout tracking, nutrition planning, and AI-assisted analytics in one place.",
-    solution: "A comprehensive fitness platform with a React Native mobile app, cloud-backed APIs, and AI-assisted analytics. Designed for cross-platform consistency and real-time synchronization.",
-    architecture: "React Native App → API Gateway → Microservices → Database → Cloud Infrastructure → Analytics & AI/ML",
-    technologies: ["React Native", "Node.js", "AWS", "Docker", "AI/ML"],
-    challenges: ["Real-time data sync across devices", "Offline-first architecture", "Cross-platform UI consistency", "AI model integration for personalized insights"],
-    github: "#",
+    category: "Mobile Apps & AI",
+    status: "Live Project",
+    database: "Supabase (PostgreSQL)",
+    problem: "Farmers lack instant tools for diagnosing plant diseases.",
+    solution: "React Native camera app integrated with FastAPI Python microservices and PyTorch/Gemini LLM for instant diagnosis.",
+    architecture: "React Native App → FastAPI Microservice → PyTorch / Gemini RAG → Supabase",
+    technologies: ["React Native", "Expo", "Python", "FastAPI", "PyTorch", "Supabase", "Gemini API"],
+    challenges: [
+      "Low-latency mobile image capture & inference pipeline",
+      "Multi-service ML containerization with Docker",
+      "Offline diagnosis caching for weak connectivity",
+    ],
+    github: "https://github.com/MrutyunjayaSenapati/PlantDoctor-AI",
     demo: null,
   },
   {
+    id: "foodygo",
+    title: "FoodyGo",
+    tagline: "Multi-Portal Food Delivery Monorepo Ecosystem",
+    featured: true,
+    category: "Full-Stack Monorepos",
+    status: "Complete",
+    database: "PostgreSQL",
+    problem: "Multi-party food ordering requires synchronized real-time state across 4 distinct portals.",
+    solution: "Unified Turborepo monorepo architecture powering Customer & Delivery Mobile Apps, Admin Dashboard, and Merchant Web Portal.",
+    portals: [
+      "Customer Mobile App (React Native - Ordering & Tracking)",
+      "Delivery Partner Mobile App (React Native - Driver Dispatch)",
+      "Admin Web Dashboard (Next.js - Analytics & Control)",
+      "Merchant Web Portal (Next.js - Menu & Order Management)",
+    ],
+    architecture: "Customer & Driver Apps + Admin & Merchant Web → Express API → PostgreSQL",
+    technologies: ["React Native", "Expo", "Next.js", "Node.js", "Express", "PostgreSQL", "Turborepo"],
+    challenges: [
+      "Monorepo type sharing across web and mobile apps",
+      "Relational PostgreSQL schema design for multi-tenant ordering",
+      "Real-time driver dispatch state management",
+    ],
+    github: "https://github.com/MrutyunjayaSenapati/foodygo",
+    demo: null,
+  },
+  {
+    id: "chatapp",
     title: "ChatApp",
-    tagline: "Real-time Messaging",
+    tagline: "Real-Time WebSocket Messaging Application",
     featured: false,
-    status: "Live",
-    problem: "Need for a full-stack real-time chat application demonstrating authentication, live messaging, and scalable architecture.",
-    solution: "A complete chat application with JWT authentication, real-time messaging via WebSockets, and a clean MERN stack architecture. Deployed on Render with CI/CD.",
-    architecture: "React Frontend → Express API → WebSocket Server → MongoDB → Cloud Deployment",
+    category: "MERN Stack",
+    status: "Live Project",
+    database: "MongoDB",
+    problem: "Real-time communication requires low-latency WebSockets and secure auth.",
+    solution: "Full-stack messaging application with JWT security, real-time Socket.io channels, and online status indicators.",
+    architecture: "React Frontend → Express API → Socket.io Engine → MongoDB",
     technologies: ["React", "Node.js", "Express", "MongoDB", "Socket.io", "JWT"],
-    challenges: ["Real-time message delivery", "Authentication flow", "Deployment on free tier infrastructure"],
+    challenges: [
+      "Low-latency WebSocket connection management",
+      "Session state handling & JWT validation",
+    ],
     github: "https://github.com/MrutyunjayaSenapati/ChatApp",
     demo: "https://chatapp-3o8b.onrender.com/",
   },
-  {
-    title: "Todoist Clone",
-    tagline: "Offline-First Task Manager",
-    featured: false,
-    status: "Complete",
-    problem: "Task management apps often lack offline capabilities and real-time sync across devices.",
-    solution: "A React Native task manager with offline-first architecture using SQLite, Zustand for state management, and Firebase for cloud sync. Supports projects, labels, reminders, and calendar view.",
-    architecture: "React Native UI → Zustand Store → SQLite (local) ↔ Sync Engine ↔ Firebase Firestore",
-    technologies: ["React Native", "Expo", "TypeScript", "SQLite", "Zustand", "Firebase"],
-    challenges: ["Conflict resolution in offline/online sync", "Local-first data architecture", "Push notification scheduling", "Recurring task time engine"],
-    github: "https://github.com/MrutyunjayaSenapati/todoist",
-    demo: null,
-  },
-  {
-    title: "Plant Doctor",
-    tagline: "AI Plant Disease Diagnosis",
-    featured: false,
-    status: "Experimental",
-    problem: "Plant disease identification requires expert knowledge. Farmers and gardeners lack accessible AI-powered tools for quick diagnosis.",
-    solution: "A full-stack monorepo with a React Native mobile app, NestJS backend, FastAI ML service, and Gemini API integration. Features image capture, AI diagnosis, treatment plans, and history tracking.",
-    architecture: "Mobile App → NestJS API → FastAI ML Service / Gemini API → Supabase → Cloudinary",
-    technologies: ["React Native", "NestJS", "FastAPI", "Python", "Supabase", "Gemini API", "Turborepo", "Docker"],
-    challenges: ["Multi-service architecture coordination", "ML model integration with mobile app", "Image processing pipeline", "Monorepo tooling with Turborepo"],
-    github: "https://github.com/MrutyunjayaSenapati/plant-doctor",
-    demo: null,
-  },
-] as const;
+];
 
 export const cloudDevOpsSteps = [
   {
-    step: "Development",
-    icon: "💻",
-    description: "Building applications with modern frameworks and type-safe languages",
-    technologies: ["React Native", "Next.js", "TypeScript", "Node.js"],
+    step: "Mobile Architecture",
+    iconKey: "Smartphone",
+    title: "Cross-Platform Mobile Clients",
+    description: "Native-feel iOS & Android apps with offline resilience and fluid UI",
+    technologies: ["React Native", "Expo", "Android Studio", "SQLite", "Zustand"],
   },
   {
-    step: "Backend",
-    icon: "🔧",
-    description: "Designing scalable APIs with authentication, databases, and real-time capabilities",
-    technologies: ["Express", "NestJS", "PostgreSQL", "MongoDB", "Socket.io"],
+    step: "Full-Stack & Relational DBs",
+    iconKey: "Globe",
+    title: "Full-Stack Web & Admin Portals",
+    description: "Multi-portal web applications and relational database schemas",
+    technologies: ["PostgreSQL", "Express", "React", "Node.js", "Next.js"],
   },
   {
-    step: "Deployment",
-    icon: "🚀",
-    description: "Containerizing applications and setting up CI/CD pipelines for automated releases",
-    technologies: ["Docker", "GitHub Actions", "Render", "Vercel"],
+    step: "Python & AI Microservices",
+    iconKey: "Code2",
+    title: "AI Inference & Python Services",
+    description: "Fast REST microservices, computer vision pipelines, and LLM RAG",
+    technologies: ["Python", "FastAPI", "PyTorch", "Gemini API", "Pydantic"],
   },
   {
-    step: "Cloud",
-    icon: "☁️",
-    description: "Leveraging cloud services for scalable infrastructure and managed resources",
-    technologies: ["AWS", "Lambda", "S3", "EC2", "Firebase"],
-  },
-  {
-    step: "DevOps",
-    icon: "🔄",
-    description: "Implementing monitoring, infrastructure as code, and operational best practices",
-    technologies: ["CI/CD", "Linux", "Nginx", "Git", "Monitoring"],
+    step: "Cloud & DevOps Infrastructure",
+    iconKey: "Cloud",
+    title: "Containerization & Cloud Deployments",
+    description: "Cloud services, Docker containers, and CI/CD automated deployment pipelines",
+    technologies: ["AWS (EC2, S3)", "Docker", "GitHub Actions", "Linux", "Nginx"],
   },
 ] as const;

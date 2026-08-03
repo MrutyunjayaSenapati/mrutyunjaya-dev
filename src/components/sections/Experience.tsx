@@ -10,7 +10,7 @@ export default function Experience() {
           <span className="text-xs font-mono px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary-light font-medium">
             Career Timeline
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] text-text">
             Professional Experience
           </h2>
           <p className="text-sm text-text-secondary max-w-xl">

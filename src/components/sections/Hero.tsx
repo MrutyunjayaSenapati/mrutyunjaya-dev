@@ -26,7 +26,7 @@ export default function Hero() {
             </div>
 
             {/* Space Grotesk Headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-text font-display">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.04] text-text font-display">
               <GradientText>Mobile & Full-Stack</GradientText> <br />
               Software Engineer.
             </h1>

@@ -143,7 +143,12 @@ export default function DevTerminal() {
       </div>
 
       {/* Output Stream */}
-      <div ref={outputContainerRef} className="space-y-3 max-h-60 overflow-y-auto pr-1">
+      <div
+        ref={outputContainerRef}
+        role="log"
+        aria-label="Terminal output"
+        className="space-y-3 max-h-60 overflow-y-auto pr-1"
+      >
         {history.map((entry, index) => (
           <div key={index} className="space-y-1">
             {entry.command !== "welcome" && (
@@ -167,6 +172,7 @@ export default function DevTerminal() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type 'help' or 'skills'..."
+          aria-label="Terminal command input"
           className="flex-1 bg-transparent text-slate-100 focus:outline-none placeholder-slate-600 font-mono text-xs"
         />
         <button type="submit" className="text-[10px] text-slate-500 hover:text-slate-300">

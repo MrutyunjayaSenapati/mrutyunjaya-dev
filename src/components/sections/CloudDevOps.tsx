@@ -29,7 +29,7 @@ export default function CloudDevOps() {
           <span className="text-xs font-mono px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-medium">
             System Architecture
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] text-text">
             End-to-End Architecture Flow Visualizer
           </h2>
           <p className="text-sm text-text-secondary max-w-xl">
@@ -42,14 +42,16 @@ export default function CloudDevOps() {
           {/* Left Flow Selector Steps */}
           <div className="lg:col-span-6 space-y-3">
             {cloudDevOpsSteps.map((step, idx) => (
-              <motion.div
+              <motion.button
                 key={step.step}
+                type="button"
+                onClick={() => setActiveStep(idx)}
+                aria-pressed={activeStep === idx}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: idx * 0.1 }}
-                onClick={() => setActiveStep(idx)}
-                className={`p-5 rounded-2xl border transition-all cursor-pointer ${
+                className={`w-full text-left p-5 rounded-2xl border transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
                   activeStep === idx
                     ? "border-primary bg-surface-elevated shadow-xl scale-[1.02]"
                     : "border-border bg-surface hover:bg-surface-elevated/50"
@@ -76,7 +78,7 @@ export default function CloudDevOps() {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </motion.button>
             ))}
           </div>
 

@@ -19,7 +19,7 @@ export default function About() {
               Background & Principles
             </span>
 
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] text-text">
               Engineering Mobile & Full-Stack Systems
             </h2>
 

@@ -22,7 +22,7 @@ export default function Projects() {
             <span className="text-xs font-mono px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary-light font-medium">
               Featured Software Engineering Work
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] text-text">
               Projects & Production Systems
             </h2>
             <p className="text-sm text-text-secondary max-w-xl">
@@ -35,8 +35,10 @@ export default function Projects() {
             {categories.map((cat) => (
               <button
                 key={cat}
+                type="button"
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                aria-pressed={selectedCategory === cat}
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                   selectedCategory === cat
                     ? "bg-primary text-white shadow-md"
                     : "text-text-muted hover:text-text"
@@ -51,14 +53,15 @@ export default function Projects() {
         {/* Projects Cards Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project, index) => (
-            <motion.div
+            <motion.button
               key={project.id}
+              type="button"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="rounded-3xl border border-border bg-surface p-6 flex flex-col justify-between glow-card relative overflow-hidden group cursor-pointer"
               onClick={() => setSelectedProject(project)}
+              className="rounded-3xl border border-border bg-surface p-6 flex flex-col justify-between glow-card relative overflow-hidden group cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             >
               {/* Card Header & Status */}
               <div className="space-y-3">
@@ -113,9 +116,17 @@ export default function Projects() {
                   <span className="text-[10px] text-text-muted">Click for Specs</span>
                 </div>
               </div>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
+
+        {filteredProjects.length === 0 && (
+          <div className="text-center py-16 rounded-3xl border border-dashed border-border">
+            <p className="text-sm text-text-muted">
+              No projects in this category yet — check back soon.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Architectural Modal Overlay */}

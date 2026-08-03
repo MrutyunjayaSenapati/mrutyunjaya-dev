@@ -64,7 +64,7 @@ export default function Navigation() {
             href={personal.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full bg-primary hover:bg-primary-light px-4 py-2 text-xs font-medium text-white transition-all shadow-md active:scale-95 flex items-center gap-1.5"
+            className="rounded-full bg-primary hover:bg-primary-light px-4 py-2 text-xs font-medium text-primary-contrast transition-all shadow-md active:scale-95 flex items-center gap-1.5"
           >
             <FileText className="w-3.5 h-3.5" />
             Resume
@@ -111,7 +111,7 @@ export default function Navigation() {
                 href={personal.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-xs font-medium text-white"
+                className="flex items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-xs font-medium text-primary-contrast"
               >
                 <FileText className="w-4 h-4" />
                 Download Resume PDF

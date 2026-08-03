@@ -35,10 +35,12 @@ export default function Projects() {
             {categories.map((cat) => (
               <button
                 key={cat}
+                type="button"
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                aria-pressed={selectedCategory === cat}
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                   selectedCategory === cat
-                    ? "bg-primary text-white shadow-md"
+                    ? "bg-primary text-primary-contrast shadow-md"
                     : "text-text-muted hover:text-text"
                 }`}
               >
@@ -51,14 +53,15 @@ export default function Projects() {
         {/* Projects Cards Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project, index) => (
-            <motion.div
+            <motion.button
               key={project.id}
+              type="button"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="rounded-3xl border border-border bg-surface p-6 flex flex-col justify-between glow-card relative overflow-hidden group cursor-pointer"
               onClick={() => setSelectedProject(project)}
+              className="rounded-3xl border border-border bg-surface p-6 flex flex-col justify-between glow-card relative overflow-hidden group cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             >
               {/* Card Header & Status */}
               <div className="space-y-3">
@@ -83,9 +86,9 @@ export default function Projects() {
 
                 {/* Portals Preview Pill (FoodyGo Special) */}
                 {project.portals && (
-                  <div className="p-2.5 rounded-xl bg-slate-900/80 border border-amber-500/30 text-[10px] space-y-1">
+                  <div className="p-2.5 rounded-xl bg-terminal-raised/80 border border-amber-500/30 text-[10px] space-y-1">
                     <span className="font-bold text-amber-400">4 Portals (PostgreSQL):</span>
-                    <div className="text-slate-400">Customer App • Partner App • Admin Web • Restaurant Web</div>
+                    <div className="text-terminal-muted">Customer App • Partner App • Admin Web • Restaurant Web</div>
                   </div>
                 )}
               </div>
@@ -113,9 +116,17 @@ export default function Projects() {
                   <span className="text-[10px] text-text-muted">Click for Specs</span>
                 </div>
               </div>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
+
+        {filteredProjects.length === 0 && (
+          <div className="text-center py-16 rounded-3xl border border-dashed border-border">
+            <p className="text-sm text-text-muted">
+              No projects in this category yet — check back soon.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Architectural Modal Overlay */}

@@ -3,45 +3,81 @@ import { Smartphone, Globe, Code2, Cloud } from "lucide-react";
 import { skills } from "../../data/portfolio";
 import DevTerminal from "../ui/DevTerminal";
 
+import reactNativeIcon from "devicon/icons/reactnative/reactnative-original.svg";
+import expoIcon from "devicon/icons/expo/expo-original.svg";
+import androidStudioIcon from "devicon/icons/androidstudio/androidstudio-plain.svg";
+import sqliteIcon from "devicon/icons/sqlite/sqlite-original.svg";
+import zustandIcon from "devicon/icons/zustand/zustand-plain.svg";
+import firebaseIcon from "devicon/icons/firebase/firebase-original.svg";
+import postgresqlIcon from "devicon/icons/postgresql/postgresql-original.svg";
+import mongodbIcon from "devicon/icons/mongodb/mongodb-original.svg";
+import expressIcon from "devicon/icons/express/express-original.svg";
+import reactIcon from "devicon/icons/react/react-original.svg";
+import nodejsIcon from "devicon/icons/nodejs/nodejs-original.svg";
+import nextjsIcon from "devicon/icons/nextjs/nextjs-plain.svg";
+import typescriptIcon from "devicon/icons/typescript/typescript-original.svg";
+import tailwindIcon from "devicon/icons/tailwindcss/tailwindcss-original.svg";
+import turboIcon from "devicon/icons/turbo/turbo-original.svg";
+import pythonIcon from "devicon/icons/python/python-original.svg";
+import fastapiIcon from "devicon/icons/fastapi/fastapi-original.svg";
+import pytorchIcon from "devicon/icons/pytorch/pytorch-original.svg";
+import awsIcon from "devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg";
+import dockerIcon from "devicon/icons/docker/docker-original.svg";
+import githubActionsIcon from "devicon/icons/githubactions/githubactions-original.svg";
+import linuxIcon from "devicon/icons/linux/linux-plain.svg";
+import nginxIcon from "devicon/icons/nginx/nginx-original.svg";
+import supabaseIcon from "devicon/icons/supabase/supabase-original.svg";
+import gitIcon from "devicon/icons/git/git-original.svg";
+
+interface SkillIcon {
+  src: string;
+  mono?: boolean;
+}
+
+const SKILL_ICONS: Record<string, SkillIcon | undefined> = {
+  "react native": { src: reactNativeIcon },
+  expo: { src: expoIcon },
+  "android studio": { src: androidStudioIcon, mono: true },
+  "sqlite (local db)": { src: sqliteIcon },
+  "zustand state": { src: zustandIcon, mono: true },
+  "firebase analytics": { src: firebaseIcon },
+  postgresql: { src: postgresqlIcon },
+  mongodb: { src: mongodbIcon },
+  "express.js": { src: expressIcon },
+  "react.js": { src: reactIcon },
+  "node.js": { src: nodejsIcon },
+  "next.js": { src: nextjsIcon, mono: true },
+  typescript: { src: typescriptIcon },
+  "tailwind css": { src: tailwindIcon },
+  turborepo: { src: turboIcon },
+  python: { src: pythonIcon },
+  fastapi: { src: fastapiIcon },
+  pytorch: { src: pytorchIcon },
+  "aws (s3, ec2, lambda)": { src: awsIcon, mono: true },
+  docker: { src: dockerIcon },
+  "github actions ci/cd": { src: githubActionsIcon },
+  "linux administration": { src: linuxIcon },
+  "nginx proxy": { src: nginxIcon },
+  supabase: { src: supabaseIcon },
+  firebase: { src: firebaseIcon },
+  "git & postman": { src: gitIcon },
+};
+
+const getSkillIcon = (item: string): SkillIcon | undefined => SKILL_ICONS[item.toLowerCase()];
+
 const CategoryIcon = ({ iconKey }: { iconKey: string }) => {
   switch (iconKey) {
     case "Smartphone":
-      return <Smartphone className="w-5 h-5 text-indigo-400" />;
+      return <Smartphone className="w-5 h-5 text-primary-light" />;
     case "Globe":
-      return <Globe className="w-5 h-5 text-purple-400" />;
+      return <Globe className="w-5 h-5 text-primary-light" />;
     case "Code2":
-      return <Code2 className="w-5 h-5 text-cyan-400" />;
+      return <Code2 className="w-5 h-5 text-primary-light" />;
     case "Cloud":
-      return <Cloud className="w-5 h-5 text-amber-400" />;
+      return <Cloud className="w-5 h-5 text-primary-light" />;
     default:
       return <Code2 className="w-5 h-5 text-primary-light" />;
   }
-};
-
-const getDeviconClass = (item: string): string | null => {
-  const lower = item.toLowerCase();
-  if (lower.includes("react native") || lower.includes("react.js")) return "devicon-react-original colored";
-  if (lower.includes("expo")) return "devicon-expo-plain";
-  if (lower.includes("postgresql")) return "devicon-postgresql-plain colored";
-  if (lower.includes("mongodb")) return "devicon-mongodb-plain colored";
-  if (lower.includes("express")) return "devicon-express-original";
-  if (lower.includes("node")) return "devicon-nodejs-plain colored";
-  if (lower.includes("next")) return "devicon-nextjs-plain";
-  if (lower.includes("typescript")) return "devicon-typescript-plain colored";
-  if (lower.includes("tailwind")) return "devicon-tailwindcss-plain colored";
-  if (lower.includes("python")) return "devicon-python-plain colored";
-  if (lower.includes("fastapi")) return "devicon-fastapi-plain colored";
-  if (lower.includes("pytorch")) return "devicon-pytorch-original colored";
-  if (lower.includes("aws")) return "devicon-amazonwebservices-plain-wordmark colored";
-  if (lower.includes("docker")) return "devicon-docker-plain colored";
-  if (lower.includes("github")) return "devicon-github-original";
-  if (lower.includes("nginx")) return "devicon-nginx-original colored";
-  if (lower.includes("supabase")) return "devicon-supabase-plain colored";
-  if (lower.includes("firebase")) return "devicon-firebase-plain colored";
-  if (lower.includes("git")) return "devicon-git-plain colored";
-  if (lower.includes("android")) return "devicon-android-plain colored";
-  if (lower.includes("sqlite")) return "devicon-sqlite-plain colored";
-  return null;
 };
 
 export default function Skills() {
@@ -91,13 +127,20 @@ export default function Skills() {
 
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {skillGroup.items.map((item) => {
-                    const deviconClass = getDeviconClass(item);
+                    const skillIcon = getSkillIcon(item);
                     return (
                       <span
                         key={item}
                         className="px-2.5 py-1 rounded-lg bg-surface-elevated border border-border text-xs font-mono text-text-secondary hover:text-text hover:border-primary/40 transition-colors flex items-center gap-1.5"
                       >
-                        {deviconClass && <i className={`${deviconClass} text-sm`} />}
+                        {skillIcon && (
+                          <img
+                            src={skillIcon.src}
+                            alt=""
+                            loading="lazy"
+                            className={`w-3.5 h-3.5 shrink-0${skillIcon.mono ? " tech-icon-mono" : ""}`}
+                          />
+                        )}
                         {item}
                       </span>
                     );

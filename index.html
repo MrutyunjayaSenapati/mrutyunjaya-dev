@@ -14,6 +14,7 @@
     <meta property="og:url" content="https://mrutyunjaya.dev" />
     <meta property="og:title" content="Mrutyunjaya Senapati — Mobile & Full-Stack Software Engineer" />
     <meta property="og:description" content="Crafting high-performance Mobile Applications & Full-Stack Systems." />
+    <!-- TODO: Add public/og-image.png (1200x630) so social share cards render. -->
     <meta property="og:image" content="/og-image.png" />
 
     <meta property="twitter:card" content="summary_large_image" />
@@ -23,6 +24,16 @@
 
     <link rel="canonical" href="https://mrutyunjaya.dev" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem("theme");
+          document.documentElement.classList.add(theme === "light" ? "light" : "dark");
+        } catch (e) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />

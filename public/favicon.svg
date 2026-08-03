@@ -1,25 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0f172a" />
-      <stop offset="100%" stop-color="#050507" />
-    </linearGradient>
-    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.9" />
-      <stop offset="50%" stop-color="#38bdf8" stop-opacity="0.7" />
-      <stop offset="100%" stop-color="#818cf8" stop-opacity="0.5" />
-    </linearGradient>
-    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#818cf8" />
-      <stop offset="100%" stop-color="#38bdf8" />
+      <stop offset="0%" stop-color="#14120f" />
+      <stop offset="100%" stop-color="#0c0b09" />
     </linearGradient>
   </defs>
 
-  <!-- Dark Slate Background with Indigo/Cyan Glow Border -->
-  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="2.5" />
+  <!-- Warm Charcoal Background with Ember Border -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="#e8843c" stroke-width="2.5" />
 
-  <!-- Emerald Active Accent Dot -->
-  <circle cx="50" cy="14" r="3.5" fill="#34d399" />
+  <!-- Ember Active Accent Dot -->
+  <circle cx="50" cy="14" r="3.5" fill="#f59e0b" />
 
   <!-- Monogram "MS" -->
   <text
@@ -29,7 +20,7 @@
     font-size="27"
     font-weight="800"
     letter-spacing="-1.5"
-    fill="url(#textGrad)"
+    fill="#fb923c"
     text-anchor="middle"
   >MS</text>
 </svg>

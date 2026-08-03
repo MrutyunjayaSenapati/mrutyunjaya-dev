@@ -1,29 +1,94 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Copy, Check, Send, ExternalLink, CheckCircle2 } from "lucide-react";
+import { Mail, Copy, Check, AlertCircle, ExternalLink, Send } from "lucide-react";
+import githubIcon from "devicon/icons/github/github-original.svg";
+import linkedinIcon from "devicon/icons/linkedin/linkedin-original.svg";
 import { personal } from "../../data/portfolio";
 
-export default function Contact() {
-  const [copied, setCopied] = useState(false);
-  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
+type CopyState = "idle" | "copied" | "failed";
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(personal.email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+interface FormErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+async function copyToClipboard(text: string): Promise<boolean> {
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // fall through to legacy fallback
+    }
+  }
+  try {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(textarea);
+    return ok;
+  } catch {
+    return false;
+  }
+}
+
+export default function Contact() {
+  const [copyState, setCopyState] = useState<CopyState>("idle");
+  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [openingMail, setOpeningMail] = useState(false);
+
+  const handleCopyEmail = async () => {
+    const ok = await copyToClipboard(personal.email);
+    setCopyState(ok ? "copied" : "failed");
+    window.setTimeout(() => setCopyState("idle"), 2000);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formState.name && formState.email && formState.message) {
-      setSubmitted(true);
-      setTimeout(() => {
-        setSubmitted(false);
-        setFormState({ name: "", email: "", message: "" });
-      }, 4000);
+    const name = formState.name.trim();
+    const email = formState.email.trim();
+    const message = formState.message.trim();
+
+    const nextErrors: FormErrors = {};
+    if (!name) nextErrors.name = "Please enter your name.";
+    if (!email) {
+      nextErrors.email = "Please enter your email.";
+    } else if (!EMAIL_RE.test(email)) {
+      nextErrors.email = "That email address doesn't look quite right.";
     }
+    if (!message) {
+      nextErrors.message = "Please write a short message.";
+    } else if (message.length < 10) {
+      nextErrors.message = "Your message is a little short — add a few more details.";
+    }
+
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
+
+    const subject = `Portfolio inquiry from ${name}`;
+    const body = `Hi Mrutyunjaya,\n\n${message}\n\n— ${name}\n${email}`;
+    window.location.href = `mailto:${personal.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setOpeningMail(true);
+    window.setTimeout(() => {
+      setOpeningMail(false);
+      setFormState({ name: "", email: "", message: "" });
+    }, 4000);
   };
+
+  const inputClass = (hasError: boolean) =>
+    `w-full px-4 py-2.5 rounded-xl bg-surface-elevated border text-sm text-text focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors ${
+      hasError ? "border-error/60" : "border-border focus:border-primary"
+    }`;
 
   return (
     <section id="contact" className="py-20 relative">
@@ -60,10 +125,21 @@ export default function Contact() {
                   </span>
                   <button
                     onClick={handleCopyEmail}
-                    className="text-xs font-mono px-2.5 py-1 rounded-lg bg-surface-elevated border border-border text-primary-light hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+                    className="text-xs font-mono px-2.5 py-1 rounded-lg bg-surface-elevated border border-border text-primary-light hover:text-text transition-colors flex items-center gap-1 cursor-pointer"
+                    aria-live="polite"
                   >
-                    {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                    {copied ? "Copied!" : "Copy Email"}
+                    {copyState === "copied" ? (
+                      <Check className="w-3 h-3 text-emerald-400" />
+                    ) : copyState === "failed" ? (
+                      <AlertCircle className="w-3 h-3 text-error" />
+                    ) : (
+                      <Copy className="w-3 h-3" />
+                    )}
+                    {copyState === "copied"
+                      ? "Copied!"
+                      : copyState === "failed"
+                        ? "Copy failed"
+                        : "Copy Email"}
                   </button>
                 </div>
                 <a
@@ -87,7 +163,7 @@ export default function Contact() {
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-mono text-text-muted flex items-center gap-1.5">
-                      <i className="devicon-github-original text-sm" />
+                      <img src={githubIcon} alt="" className="w-3.5 h-3.5 shrink-0 tech-icon-mono" />
                       GitHub
                     </span>
                     <ExternalLink className="w-3 h-3 text-primary-light" />
@@ -103,7 +179,7 @@ export default function Contact() {
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-mono text-text-muted flex items-center gap-1.5">
-                      <i className="devicon-linkedin-plain colored text-sm" />
+                      <img src={linkedinIcon} alt="" className="w-3.5 h-3.5 shrink-0" />
                       LinkedIn
                     </span>
                     <ExternalLink className="w-3 h-3 text-primary-light" />
@@ -114,7 +190,7 @@ export default function Contact() {
             </div>
           </motion.div>
 
-          {/* Right Glass Contact Form */}
+          {/* Right Contact Form */}
           <motion.div
             className="lg:col-span-7 flex flex-col"
             initial={{ opacity: 0, y: 20 }}
@@ -125,63 +201,104 @@ export default function Contact() {
             <div className="rounded-3xl border border-border glass-panel p-6 sm:p-8 space-y-6 shadow-2xl relative h-full flex flex-col justify-between">
               <h3 className="text-xl font-bold text-text">Send a Message</h3>
 
-              {submitted ? (
-                <div className="p-6 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-center space-y-2">
-                  <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
-                  <div className="text-sm font-bold text-emerald-300">Message Sent Successfully!</div>
-                  <p className="text-xs text-text-secondary">
-                    Thank you for reaching out. I will respond to your message shortly.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-mono text-text-muted">Your Name</label>
-                      <input
-                        type="text"
-                        required
-                        value={formState.name}
-                        onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                        placeholder="John Doe"
-                        className="w-full px-4 py-2.5 rounded-xl bg-surface-elevated border border-border text-sm text-text focus:outline-none focus:border-primary transition-colors"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-mono text-text-muted">Your Email</label>
-                      <input
-                        type="email"
-                        required
-                        value={formState.email}
-                        onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                        placeholder="john@example.com"
-                        className="w-full px-4 py-2.5 rounded-xl bg-surface-elevated border border-border text-sm text-text focus:outline-none focus:border-primary transition-colors"
-                      />
-                    </div>
+              <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label htmlFor="contact-name" className="text-xs font-mono text-text-muted">
+                      Your Name
+                    </label>
+                    <input
+                      id="contact-name"
+                      type="text"
+                      required
+                      autoComplete="name"
+                      value={formState.name}
+                      onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                      placeholder="John Doe"
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? "contact-name-error" : undefined}
+                      className={inputClass(!!errors.name)}
+                    />
+                    {errors.name && (
+                      <p id="contact-name-error" className="text-xs text-error flex items-center gap-1" role="alert">
+                        <AlertCircle className="w-3 h-3 shrink-0" />
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-mono text-text-muted">Message</label>
-                    <textarea
+                    <label htmlFor="contact-email" className="text-xs font-mono text-text-muted">
+                      Your Email
+                    </label>
+                    <input
+                      id="contact-email"
+                      type="email"
                       required
-                      rows={4}
-                      value={formState.message}
-                      onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                      placeholder="Hi Mrutyunjaya, I would like to discuss a Mobile App engineering opportunity..."
-                      className="w-full px-4 py-2.5 rounded-xl bg-surface-elevated border border-border text-sm text-text focus:outline-none focus:border-primary transition-colors resize-none"
+                      autoComplete="email"
+                      value={formState.email}
+                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                      placeholder="john@example.com"
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "contact-email-error" : undefined}
+                      className={inputClass(!!errors.email)}
                     />
+                    {errors.email && (
+                      <p id="contact-email-error" className="text-xs text-error flex items-center gap-1" role="alert">
+                        <AlertCircle className="w-3 h-3 shrink-0" />
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
+                </div>
 
+                <div className="space-y-1">
+                  <label htmlFor="contact-message" className="text-xs font-mono text-text-muted">
+                    Message
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    required
+                    rows={4}
+                    value={formState.message}
+                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                    placeholder="Hi Mrutyunjaya, I would like to discuss a Mobile App engineering opportunity..."
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? "contact-message-error" : undefined}
+                    className={`${inputClass(!!errors.message)} resize-none`}
+                  />
+                  {errors.message && (
+                    <p id="contact-message-error" className="text-xs text-error flex items-center gap-1" role="alert">
+                      <AlertCircle className="w-3 h-3 shrink-0" />
+                      {errors.message}
+                    </p>
+                  )}
+                </div>
+
+                {openingMail ? (
+                  <div className="w-full py-3 rounded-xl bg-primary/10 border border-primary/30 text-xs text-text-secondary flex flex-wrap items-center justify-center gap-2 px-4">
+                    <Mail className="w-4 h-4 text-primary-light" />
+                    <span>
+                      Opening your email app… if it doesn&apos;t open, email{" "}
+                      <a
+                        href={`mailto:${personal.email}`}
+                        className="text-primary-light underline underline-offset-2"
+                      >
+                        {personal.email}
+                      </a>{" "}
+                      directly.
+                    </span>
+                  </div>
+                ) : (
                   <button
                     type="submit"
-                    className="w-full py-3 rounded-xl bg-primary hover:bg-primary-light text-xs font-semibold text-white transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-3 rounded-xl bg-primary hover:bg-primary-light text-xs font-semibold text-primary-contrast transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                     Send Message
                   </button>
-                </form>
-              )}
+                )}
+              </form>
             </div>
           </motion.div>
         </div>

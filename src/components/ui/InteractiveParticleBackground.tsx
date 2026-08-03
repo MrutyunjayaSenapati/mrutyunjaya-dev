@@ -95,7 +95,7 @@ export default function InteractiveParticleBackground() {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(mouseX, mouseY);
-          ctx.strokeStyle = `rgba(99, 102, 241, ${proximity * 0.25})`;
+          ctx.strokeStyle = `rgba(232, 132, 60, ${proximity * 0.25})`;
           ctx.lineWidth = 0.8;
           ctx.stroke();
         } else {
@@ -105,9 +105,9 @@ export default function InteractiveParticleBackground() {
         // Draw particle node
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(129, 140, 248, ${p.alpha})`;
+        ctx.fillStyle = `rgba(232, 132, 60, ${p.alpha})`;
         ctx.shadowBlur = dist < maxCursorDist ? 8 : 0;
-        ctx.shadowColor = "rgba(99, 102, 241, 0.8)";
+        ctx.shadowColor = "rgba(232, 132, 60, 0.8)";
         ctx.fill();
 
         // Connect nearby particles to each other

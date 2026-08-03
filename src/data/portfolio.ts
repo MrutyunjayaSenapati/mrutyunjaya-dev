@@ -11,10 +11,10 @@ export const personal = {
 } as const;
 
 export const techPipeline = [
-  { layer: "Mobile App", tech: "React Native / Expo", iconKey: "Smartphone", color: "from-indigo-500 to-indigo-400" },
-  { layer: "Web App & DB", tech: "PostgreSQL / MERN", iconKey: "Globe", color: "from-purple-500 to-purple-400" },
-  { layer: "Python & AI", tech: "FastAPI / PyTorch", iconKey: "Code2", color: "from-cyan-500 to-cyan-400" },
-  { layer: "Cloud Infra", tech: "AWS / Docker", iconKey: "Cloud", color: "from-amber-500 to-amber-400" },
+  { layer: "Mobile App", tech: "React Native / Expo", iconKey: "Smartphone", color: "from-orange-500 to-amber-400" },
+  { layer: "Web App & DB", tech: "PostgreSQL / MERN", iconKey: "Globe", color: "from-amber-500 to-orange-400" },
+  { layer: "Python & AI", tech: "FastAPI / PyTorch", iconKey: "Code2", color: "from-orange-600 to-amber-500" },
+  { layer: "Cloud Infra", tech: "AWS / Docker", iconKey: "Cloud", color: "from-amber-400 to-orange-500" },
 ] as const;
 
 export const techStack = [

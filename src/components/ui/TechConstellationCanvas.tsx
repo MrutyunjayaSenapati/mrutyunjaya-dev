@@ -33,19 +33,19 @@ import gitIcon from "devicon/icons/git/git-original.svg";
 import tailwindIcon from "devicon/icons/tailwindcss/tailwindcss-original.svg";
 
 const rawTechData = [
-  { id: "react-native", name: "React Native", category: "Mobile" as const, svgDataUrl: reactIcon, color: "#38bdf8", pctX: 0.5, pctY: 0.48 },
+  { id: "react-native", name: "React Native", category: "Mobile" as const, svgDataUrl: reactIcon, color: "#fb923c", pctX: 0.5, pctY: 0.48 },
   { id: "expo", name: "Expo", category: "Mobile" as const, svgDataUrl: expoIcon, color: "#f8fafc", pctX: 0.28, pctY: 0.3 },
-  { id: "postgresql", name: "PostgreSQL", category: "MERN & DB" as const, svgDataUrl: postgresqlIcon, color: "#60a5fa", pctX: 0.22, pctY: 0.6 },
-  { id: "python", name: "Python", category: "Python & AI" as const, svgDataUrl: pythonIcon, color: "#38bdf8", pctX: 0.72, pctY: 0.32 },
+  { id: "postgresql", name: "PostgreSQL", category: "MERN & DB" as const, svgDataUrl: postgresqlIcon, color: "#f59e0b", pctX: 0.22, pctY: 0.6 },
+  { id: "python", name: "Python", category: "Python & AI" as const, svgDataUrl: pythonIcon, color: "#fb923c", pctX: 0.72, pctY: 0.32 },
   { id: "fastapi", name: "FastAPI", category: "Python & AI" as const, svgDataUrl: fastapiIcon, color: "#10b981", pctX: 0.78, pctY: 0.58 },
   { id: "nodejs", name: "Node.js", category: "MERN & DB" as const, svgDataUrl: nodejsIcon, color: "#22c55e", pctX: 0.5, pctY: 0.2 },
-  { id: "express", name: "Express", category: "MERN & DB" as const, svgDataUrl: expressIcon, color: "#cbd5e1", pctX: 0.62, pctY: 0.75 },
+  { id: "express", name: "Express", category: "MERN & DB" as const, svgDataUrl: expressIcon, color: "#e7d9bf", pctX: 0.62, pctY: 0.75 },
   { id: "mongodb", name: "MongoDB", category: "MERN & DB" as const, svgDataUrl: mongodbIcon, color: "#4ade80", pctX: 0.38, pctY: 0.76 },
   { id: "aws", name: "AWS Cloud", category: "DevOps" as const, svgDataUrl: awsIcon, color: "#fbbf24", pctX: 0.82, pctY: 0.22 },
-  { id: "docker", name: "Docker", category: "DevOps" as const, svgDataUrl: dockerIcon, color: "#38bdf8", pctX: 0.15, pctY: 0.42 },
-  { id: "typescript", name: "TypeScript", category: "Mobile" as const, svgDataUrl: typescriptIcon, color: "#60a5fa", pctX: 0.65, pctY: 0.42 },
+  { id: "docker", name: "Docker", category: "DevOps" as const, svgDataUrl: dockerIcon, color: "#fb923c", pctX: 0.15, pctY: 0.42 },
+  { id: "typescript", name: "TypeScript", category: "Mobile" as const, svgDataUrl: typescriptIcon, color: "#f59e0b", pctX: 0.65, pctY: 0.42 },
   { id: "git", name: "Git", category: "DevOps" as const, svgDataUrl: gitIcon, color: "#f97316", pctX: 0.85, pctY: 0.44 },
-  { id: "tailwind", name: "Tailwind CSS", category: "MERN & DB" as const, svgDataUrl: tailwindIcon, color: "#38bdf8", pctX: 0.14, pctY: 0.22 },
+  { id: "tailwind", name: "Tailwind CSS", category: "MERN & DB" as const, svgDataUrl: tailwindIcon, color: "#fb923c", pctX: 0.14, pctY: 0.22 },
 ];
 
 export default function TechConstellationCanvas() {
@@ -165,7 +165,7 @@ export default function TechConstellationCanvas() {
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(mouseX, mouseY);
-            ctx.strokeStyle = `rgba(99, 102, 241, ${lineAlpha})`;
+            ctx.strokeStyle = `rgba(232, 132, 60, ${lineAlpha})`;
             ctx.lineWidth = 1.2;
             ctx.stroke();
           }
@@ -197,7 +197,7 @@ export default function TechConstellationCanvas() {
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(148, 163, 184, ${linkAlpha})`;
+            ctx.strokeStyle = `rgba(181, 169, 150, ${linkAlpha})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -208,7 +208,7 @@ export default function TechConstellationCanvas() {
         ctx.save();
         ctx.beginPath();
         ctx.arc(p1.x, p1.y, p1.radius, 0, Math.PI * 2);
-        ctx.fillStyle = isHovered ? "rgba(15, 23, 42, 0.98)" : "rgba(10, 15, 28, 0.92)";
+        ctx.fillStyle = isHovered ? "rgba(28, 24, 18, 0.98)" : "rgba(20, 17, 13, 0.92)";
         ctx.shadowBlur = isHovered ? 22 : 8;
         ctx.shadowColor = p1.color;
         ctx.fill();
@@ -300,12 +300,12 @@ export default function TechConstellationCanvas() {
       className="w-full max-w-lg h-[460px] sm:h-[500px] relative mx-auto rounded-3xl border border-border glass-panel overflow-hidden shadow-2xl flex flex-col justify-between p-4 cursor-crosshair select-none"
     >
       {/* Background radial glow */}
-      <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/20 via-transparent to-cyan-950/20 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-amber-950/20 via-transparent to-orange-950/20 pointer-events-none" />
 
       {/* Top Header Badge */}
-      <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/85 border border-border backdrop-blur-md pointer-events-none">
+      <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-terminal/85 border border-border backdrop-blur-md pointer-events-none">
         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="text-[11px] font-mono text-slate-200 font-bold">
+        <span className="text-[11px] font-mono text-terminal-text font-bold">
           Continuous 60 FPS Floating Physics
         </span>
       </div>
@@ -326,7 +326,7 @@ export default function TechConstellationCanvas() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.2 }}
-              className="p-3.5 rounded-2xl bg-slate-950/95 border border-indigo-500/50 backdrop-blur-md shadow-2xl flex items-center justify-between text-left"
+              className="p-3.5 rounded-2xl bg-terminal/95 border border-primary/50 backdrop-blur-md shadow-2xl flex items-center justify-between text-left"
             >
               <div className="flex items-center gap-3">
                 <div
@@ -340,17 +340,17 @@ export default function TechConstellationCanvas() {
                   />
                 </div>
                 <div>
-                  <div className="text-base font-bold text-white font-display">
+                  <div className="text-base font-bold text-terminal-text font-display">
                     {hoveredParticle.name}
                   </div>
-                  <div className="text-[11px] font-mono text-cyan-400">
+                  <div className="text-[11px] font-mono text-accent">
                     Category: {hoveredParticle.category}
                   </div>
                 </div>
               </div>
 
               <div className="text-right">
-                <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 font-medium">
+                <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-primary/15 border border-primary/30 text-primary-light font-medium">
                   Core Stack
                 </span>
               </div>
@@ -361,13 +361,13 @@ export default function TechConstellationCanvas() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="p-3 rounded-2xl bg-slate-950/80 border border-border backdrop-blur-md flex items-center justify-between text-xs font-mono text-slate-300 text-left"
+              className="p-3 rounded-2xl bg-terminal/80 border border-border backdrop-blur-md flex items-center justify-between text-xs font-mono text-terminal-text text-left"
             >
               <div className="flex items-center gap-2">
-                <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                <Zap className="w-3.5 h-3.5 text-accent" />
                 <span>Hover or touch nodes to interact with tech constellation</span>
               </div>
-              <span className="text-[10px] text-slate-500 hidden sm:inline font-mono">
+              <span className="text-[10px] text-terminal-muted hidden sm:inline font-mono">
                 Interactive Graph
               </span>
             </motion.div>

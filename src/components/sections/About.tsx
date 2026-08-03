@@ -33,7 +33,7 @@ export default function About() {
             <div className="grid sm:grid-cols-2 gap-4 pt-2">
               <div className="p-4 rounded-2xl bg-surface border border-border space-y-1 glow-card">
                 <div className="text-sm font-bold text-text flex items-center gap-2">
-                  <Smartphone className="w-4 h-4 text-indigo-400" />
+                  <Smartphone className="w-4 h-4 text-primary-light" />
                   <span>Mobile Applications</span>
                 </div>
                 <p className="text-xs text-text-muted">
@@ -43,7 +43,7 @@ export default function About() {
 
               <div className="p-4 rounded-2xl bg-surface border border-border space-y-1 glow-card">
                 <div className="text-sm font-bold text-text flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-purple-400" />
+                  <Globe className="w-4 h-4 text-primary-light" />
                   <span>Full-Stack Monorepos</span>
                 </div>
                 <p className="text-xs text-text-muted">
@@ -53,7 +53,7 @@ export default function About() {
 
               <div className="p-4 rounded-2xl bg-surface border border-border space-y-1 glow-card">
                 <div className="text-sm font-bold text-text flex items-center gap-2">
-                  <Code2 className="w-4 h-4 text-cyan-400" />
+                  <Code2 className="w-4 h-4 text-primary-light" />
                   <span>Python & AI Services</span>
                 </div>
                 <p className="text-xs text-text-muted">
@@ -63,7 +63,7 @@ export default function About() {
 
               <div className="p-4 rounded-2xl bg-surface border border-border space-y-1 glow-card">
                 <div className="text-sm font-bold text-text flex items-center gap-2">
-                  <Cloud className="w-4 h-4 text-amber-400" />
+                  <Cloud className="w-4 h-4 text-primary-light" />
                   <span>Cloud Infrastructure</span>
                 </div>
                 <p className="text-xs text-text-muted">
@@ -103,7 +103,7 @@ export default function About() {
                 </div>
                 <div className="flex justify-between py-1">
                   <span className="text-text-muted">Database</span>
-                  <span className="font-semibold text-cyan-400">PostgreSQL</span>
+                  <span className="font-semibold text-accent">PostgreSQL</span>
                 </div>
               </div>
 
@@ -112,7 +112,7 @@ export default function About() {
                   href={personal.resume}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 w-full text-center rounded-xl bg-primary hover:bg-primary-light py-3 text-xs font-semibold text-white transition-all shadow-md active:scale-95"
+                  className="inline-flex items-center justify-center gap-2 w-full text-center rounded-xl bg-primary hover:bg-primary-light py-3 text-xs font-semibold text-primary-contrast transition-all shadow-md active:scale-95"
                 >
                   <Download className="w-3.5 h-3.5" />
                   Download Resume PDF

@@ -26,7 +26,7 @@ export default function Hero() {
             </div>
 
             {/* Space Grotesk Headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight text-text font-display">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.04] text-text font-display">
               <GradientText>Mobile & Full-Stack</GradientText> <br />
               Software Engineer.
             </h1>
@@ -57,7 +57,7 @@ export default function Hero() {
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary-light px-6 py-3 text-xs sm:text-sm font-semibold text-primary-contrast transition-all shadow-lg active:scale-95 font-display"
+                className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary-light px-6 py-3 text-xs sm:text-sm font-semibold text-white transition-all shadow-lg active:scale-95 font-display"
               >
                 View Projects
                 <ArrowRight className="w-4 h-4" />

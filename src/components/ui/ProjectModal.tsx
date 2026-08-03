@@ -72,7 +72,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/70 backdrop-blur-md"
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-md"
           />
 
           {/* Modal Container */}
@@ -107,7 +107,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                   {project.status}
                 </span>
-                <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-accent/15 text-accent-light font-medium border border-accent/30">
+                <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-medium border border-cyan-500/30">
                   DB: {project.database}
                 </span>
               </div>
@@ -128,7 +128,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-text-secondary">
                   {project.portals.map((portal, idx) => (
-                    <div key={idx} className="p-2 rounded-xl bg-terminal-raised/60 border border-border/60">
+                    <div key={idx} className="p-2 rounded-xl bg-slate-900/60 border border-border/60">
                       {portal}
                     </div>
                   ))}
@@ -158,11 +158,11 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             </div>
 
             {/* Architecture Diagram */}
-            <div className="mt-6 p-4 rounded-2xl bg-terminal border border-border space-y-2">
-              <h3 className="text-xs font-semibold text-accent uppercase tracking-wider font-mono">
+            <div className="mt-6 p-4 rounded-2xl bg-slate-950 border border-border space-y-2">
+              <h3 className="text-xs font-semibold text-cyan-400 uppercase tracking-wider font-mono">
                 System Architecture Flow
               </h3>
-              <div className="p-3 rounded-xl bg-terminal-raised border border-terminal-border text-xs font-mono text-accent-light overflow-x-auto whitespace-nowrap">
+              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-300 overflow-x-auto whitespace-nowrap">
                 {project.architecture}
               </div>
             </div>
@@ -206,7 +206,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-medium text-primary-contrast hover:opacity-90 transition-all active:scale-95"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-medium text-white hover:opacity-90 transition-all active:scale-95"
                 >
                   <img src={githubIcon} alt="" className="w-4 h-4 shrink-0 tech-icon-mono" />
                   View Repository

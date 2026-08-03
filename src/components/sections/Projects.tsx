@@ -22,7 +22,7 @@ export default function Projects() {
             <span className="text-xs font-mono px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary-light font-medium">
               Featured Software Engineering Work
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] text-text">
               Projects & Production Systems
             </h2>
             <p className="text-sm text-text-secondary max-w-xl">
@@ -40,7 +40,7 @@ export default function Projects() {
                 aria-pressed={selectedCategory === cat}
                 className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                   selectedCategory === cat
-                    ? "bg-primary text-primary-contrast shadow-md"
+                    ? "bg-primary text-white shadow-md"
                     : "text-text-muted hover:text-text"
                 }`}
               >
@@ -86,9 +86,9 @@ export default function Projects() {
 
                 {/* Portals Preview Pill (FoodyGo Special) */}
                 {project.portals && (
-                  <div className="p-2.5 rounded-xl bg-terminal-raised/80 border border-amber-500/30 text-[10px] space-y-1">
+                  <div className="p-2.5 rounded-xl bg-slate-900/80 border border-amber-500/30 text-[10px] space-y-1">
                     <span className="font-bold text-amber-400">4 Portals (PostgreSQL):</span>
-                    <div className="text-terminal-muted">Customer App • Partner App • Admin Web • Restaurant Web</div>
+                    <div className="text-slate-400">Customer App • Partner App • Admin Web • Restaurant Web</div>
                   </div>
                 )}
               </div>

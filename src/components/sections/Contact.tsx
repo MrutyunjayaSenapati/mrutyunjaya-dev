@@ -87,7 +87,7 @@ export default function Contact() {
 
   const inputClass = (hasError: boolean) =>
     `w-full px-4 py-2.5 rounded-xl bg-surface-elevated border text-sm text-text focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors ${
-      hasError ? "border-error/60" : "border-border focus:border-primary"
+      hasError ? "border-rose-500/60" : "border-border focus:border-primary"
     }`;
 
   return (
@@ -98,7 +98,7 @@ export default function Contact() {
           <span className="text-xs font-mono px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary-light font-medium">
             Get In Touch
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] text-text">
             Let&apos;s Build Something Extraordinary
           </h2>
           <p className="text-sm text-text-secondary max-w-xl">
@@ -131,7 +131,7 @@ export default function Contact() {
                     {copyState === "copied" ? (
                       <Check className="w-3 h-3 text-emerald-400" />
                     ) : copyState === "failed" ? (
-                      <AlertCircle className="w-3 h-3 text-error" />
+                      <AlertCircle className="w-3 h-3 text-rose-400" />
                     ) : (
                       <Copy className="w-3 h-3" />
                     )}
@@ -220,7 +220,7 @@ export default function Contact() {
                       className={inputClass(!!errors.name)}
                     />
                     {errors.name && (
-                      <p id="contact-name-error" className="text-xs text-error flex items-center gap-1" role="alert">
+                      <p id="contact-name-error" className="text-xs text-rose-400 flex items-center gap-1" role="alert">
                         <AlertCircle className="w-3 h-3 shrink-0" />
                         {errors.name}
                       </p>
@@ -244,7 +244,7 @@ export default function Contact() {
                       className={inputClass(!!errors.email)}
                     />
                     {errors.email && (
-                      <p id="contact-email-error" className="text-xs text-error flex items-center gap-1" role="alert">
+                      <p id="contact-email-error" className="text-xs text-rose-400 flex items-center gap-1" role="alert">
                         <AlertCircle className="w-3 h-3 shrink-0" />
                         {errors.email}
                       </p>
@@ -268,7 +268,7 @@ export default function Contact() {
                     className={`${inputClass(!!errors.message)} resize-none`}
                   />
                   {errors.message && (
-                    <p id="contact-message-error" className="text-xs text-error flex items-center gap-1" role="alert">
+                    <p id="contact-message-error" className="text-xs text-rose-400 flex items-center gap-1" role="alert">
                       <AlertCircle className="w-3 h-3 shrink-0" />
                       {errors.message}
                     </p>
@@ -292,7 +292,7 @@ export default function Contact() {
                 ) : (
                   <button
                     type="submit"
-                    className="w-full py-3 rounded-xl bg-primary hover:bg-primary-light text-xs font-semibold text-primary-contrast transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-3 rounded-xl bg-primary hover:bg-primary-light text-xs font-semibold text-white transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                     Send Message

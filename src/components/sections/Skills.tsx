@@ -68,13 +68,13 @@ const getSkillIcon = (item: string): SkillIcon | undefined => SKILL_ICONS[item.t
 const CategoryIcon = ({ iconKey }: { iconKey: string }) => {
   switch (iconKey) {
     case "Smartphone":
-      return <Smartphone className="w-5 h-5 text-primary-light" />;
+      return <Smartphone className="w-5 h-5 text-indigo-400" />;
     case "Globe":
-      return <Globe className="w-5 h-5 text-primary-light" />;
+      return <Globe className="w-5 h-5 text-purple-400" />;
     case "Code2":
-      return <Code2 className="w-5 h-5 text-primary-light" />;
+      return <Code2 className="w-5 h-5 text-cyan-400" />;
     case "Cloud":
-      return <Cloud className="w-5 h-5 text-primary-light" />;
+      return <Cloud className="w-5 h-5 text-amber-400" />;
     default:
       return <Code2 className="w-5 h-5 text-primary-light" />;
   }
@@ -89,7 +89,7 @@ export default function Skills() {
           <span className="text-xs font-mono px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary-light font-medium">
             Technical Competencies
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] text-text">
             Skill Matrix & Interactive Terminal
           </h2>
           <p className="text-sm text-text-secondary max-w-xl">

@@ -20,7 +20,7 @@ export default function Button({
   const base = cn(
     "inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
-    variant === "primary" && "bg-primary text-primary-contrast hover:opacity-90 active:scale-[0.98]",
+    variant === "primary" && "bg-primary text-white hover:opacity-90 active:scale-[0.98]",
     variant === "secondary" && "border border-border bg-surface text-text-secondary hover:bg-surface-elevated hover:text-text",
     variant === "ghost" && "text-text-secondary hover:text-text",
     className

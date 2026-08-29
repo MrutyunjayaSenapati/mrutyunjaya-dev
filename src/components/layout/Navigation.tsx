@@ -1,124 +1,152 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ExternalLink, FileText } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import { personal } from "../../data/portfolio";
-import ThemeToggle from "../ui/ThemeToggle";
+import useActiveSection from "../../hooks/useActiveSection";
 
 const navItems = [
-  { label: "Home", href: "#hero" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Work", href: "#projects", id: "projects" },
+  { label: "Stack", href: "#skills", id: "skills" },
+  { label: "Experience", href: "#experience", id: "experience" },
+  { label: "About", href: "#about", id: "about" },
+  { label: "Contact", href: "#contact", id: "contact" },
 ];
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const active = useActiveSection();
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 24);
+        ticking = false;
+      });
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        scrolled
-          ? "py-3 bg-surface/85 backdrop-blur-md border-b border-border shadow-lg"
-          : "py-5 bg-transparent"
+      className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
+        scrolled || mobileMenuOpen
+          ? "border-b border-border bg-bg/85 backdrop-blur-md"
+          : "border-b border-transparent"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
-        {/* Brand Logo */}
-        <a href="#hero" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center font-mono font-bold text-primary text-sm group-hover:scale-105 transition-transform">
-            MS
-          </div>
-          <span className="text-sm font-bold tracking-tight text-text group-hover:text-primary transition-colors">
-            {personal.name}
-          </span>
+      <div
+        className={`mx-auto flex max-w-6xl items-center justify-between px-4 transition-all duration-300 sm:px-6 ${
+          scrolled ? "py-3" : "py-5"
+        }`}
+      >
+        {/* Wordmark */}
+        <a
+          href="#hero"
+          className="group flex items-center font-display text-sm font-semibold tracking-tight text-text"
+          aria-label="Back to top"
+        >
+          ms<span className="text-accent transition-transform duration-300 group-hover:translate-y-[-1px]">.</span>
         </a>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1.5 bg-surface-elevated/70 border border-border p-1.5 rounded-full backdrop-blur-md">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className="px-4 py-1.5 rounded-full text-xs font-medium text-text-secondary hover:text-text hover:bg-surface transition-all"
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
-
-        {/* Right Action Controls */}
-        <div className="hidden md:flex items-center gap-3">
-          <ThemeToggle />
+        {/* Desktop nav */}
+        <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
+          {navItems.map((item) => {
+            const isActive = active === item.id;
+            return (
+              <a
+                key={item.id}
+                href={item.href}
+                aria-current={isActive ? "true" : undefined}
+                className={`relative py-1 font-mono text-xs uppercase tracking-[0.08em] transition-colors ${
+                  isActive ? "text-text" : "text-text-muted hover:text-text-secondary"
+                }`}
+              >
+                {item.label}
+                <span
+                  aria-hidden
+                  className={`absolute -bottom-0.5 left-0 h-px bg-accent transition-all duration-300 ${
+                    isActive ? "w-full" : "w-0"
+                  }`}
+                />
+              </a>
+            );
+          })}
           <a
             href={personal.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full bg-primary hover:bg-primary-light px-4 py-2 text-xs font-medium text-white transition-all shadow-md active:scale-95 flex items-center gap-1.5"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border px-3.5 py-2 font-mono text-xs uppercase tracking-[0.08em] text-text-secondary transition-colors hover:border-border-strong hover:text-text"
           >
-            <FileText className="w-3.5 h-3.5" />
             Resume
-            <ExternalLink className="w-3 h-3 opacity-80" />
+            <ArrowUpRight className="h-3 w-3" />
           </a>
-        </div>
+        </nav>
 
-        {/* Mobile Menu Button */}
-        <div className="flex md:hidden items-center gap-2">
-          <ThemeToggle />
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-xl border border-border bg-surface text-text-secondary hover:text-text cursor-pointer"
-            aria-label="Toggle Navigation Menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
+        {/* Mobile trigger */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border border-border text-text-secondary transition-colors hover:text-text md:hidden"
+          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+        </button>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile drawer */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
+          <motion.nav
+            aria-label="Mobile"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-surface border-b border-border overflow-hidden px-4 py-4 space-y-3"
+            transition={{ duration: 0.35, ease: EASE }}
+            className="overflow-hidden border-t border-border md:hidden"
           >
-            <div className="flex flex-col space-y-2 text-left">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
+            <div className="flex flex-col gap-1 px-4 pb-8 pt-4">
+              {navItems.map((item, idx) => (
+                <motion.a
+                  key={item.id}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 rounded-xl text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-elevated transition-colors"
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 + idx * 0.04, duration: 0.3 }}
+                  className="flex items-baseline justify-between border-b border-border/60 py-3.5 font-display text-2xl font-medium text-text"
                 >
                   {item.label}
-                </a>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
+                    0{idx + 1}
+                  </span>
+                </motion.a>
               ))}
-            </div>
-            <div className="pt-2 border-t border-border">
               <a
                 href={personal.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-xs font-medium text-white"
+                onClick={() => setMobileMenuOpen(false)}
+                className="mt-5 inline-flex items-center justify-center gap-2 rounded-md bg-accent py-3 font-mono text-xs font-medium uppercase tracking-[0.08em] text-accent-ink"
               >
-                <FileText className="w-4 h-4" />
-                Download Resume PDF
-                <ExternalLink className="w-3.5 h-3.5" />
+                Resume
+                <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             </div>
-          </motion.div>
+          </motion.nav>
         )}
       </AnimatePresence>
     </header>

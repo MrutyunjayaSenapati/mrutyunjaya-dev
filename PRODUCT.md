@@ -16,20 +16,18 @@ A personal portfolio for Mrutyunjaya Senapati that establishes engineering credi
 
 ## Positioning
 
-Interactive evidence over claims. Instead of a bulleted resume page, the portfolio lets a visitor prove the skills to themselves: an interactive terminal, an architecture-flow visualizer, and modal deep-dives into each project's problem, solution, architecture, and engineering challenges.
+Interactive evidence over claims, stated with editorial restraint. The portfolio reads like an engineering logbook: a kinetic hero statement, large editorial project rows with code-drawn architecture schematics, an interactive CLI terminal, and modal deep-dives into each project's problem, solution, architecture, and engineering challenges. No screenshots exist, so schematics are drawn in code — honest diagrams, never fabricated imagery.
 
 ## Operating Context
 
-Evaluated on desktop and mobile browsers, often skimmed in under a minute. Dark theme is the default, with a light theme toggle. Navigation is a single scrolling page: Hero, Projects, Skills (+ interactive terminal), Experience, About, Contact, Footer.
+Evaluated on desktop and mobile browsers, often skimmed in under a minute. Dark-only theme (committed decision — no toggle). Navigation is a single scrolling page: Hero, Selected work, The stack (+ interactive terminal), Experience, Now, Say hello (contact), Footer.
 
 ## Capabilities and Constraints
 
 - Single-page app (Vite + React 19 + TypeScript + Tailwind CSS v4 + framer-motion). Content is data-driven from `src/data/portfolio.ts`.
-- Sections: Hero, Projects (filterable, with detail modal), Skills + DevTerminal, Experience, Cloud/Architecture visualizer, About, Contact.
-- Contact form opens a pre-filled `mailto:` to mrutyunjayasenapati007@gmail.com; there is no backend.
-- Theme toggle persists via `localStorage["theme"]`; FOUC guard in `index.html`.
+- Sections: Hero (scroll-linked handoff into work), Projects (editorial rows, cursor-following schematic preview, accessible detail modal), Skills ledger + DevTerminal, Experience, Now, Contact (email-first: giant mailto link, copy-to-clipboard, social links; there is no form and no backend).
+- Project imagery is code-drawn SVG schematics (`ProjectSchematic.tsx`), one per project. When real screenshots become available, replace or supplement the schematics.
 - Open decision: `public/og-image.png` (1200x630) is still to be added for social share cards.
-- Known cleanup: `src/hooks/useTheme.ts` is unused dead code using a different storage key (`"portfolio-theme"`).
 
 ## Brand Commitments
 
@@ -48,9 +46,10 @@ Evaluated on desktop and mobile browsers, often skimmed in under a minute. Dark 
 - Prove skill through interactive evidence and engineering depth, not self-claims.
 - Lead with substance: architecture, data flow, and challenges for every project.
 - Credibility is a constraint: real links, real companies, nothing fabricated.
-- Design work must meet WCAG 2.2 AA in both light and dark themes.
+- Design work must meet WCAG 2.2 AA in the dark theme.
 - Keep content in data and design in components so facts and visuals stay independently maintainable.
+- Restraint is the identity: one accent color, no decorative animation, whitespace over ornament.
 
 ## Accessibility & Inclusion
 
-WCAG 2.2 AA is the target for all design and implementation work, across both light and dark themes.
+WCAG 2.2 AA is the target for all design and implementation work, in the dark theme. `prefers-reduced-motion` disables entrance transforms, the cursor preview, and ambient loops.

@@ -10,28 +10,6 @@ export const personal = {
   status: "Available for Engineering Roles",
 } as const;
 
-export const techPipeline = [
-  { layer: "Mobile App", tech: "React Native / Expo", iconKey: "Smartphone", color: "from-indigo-500 to-indigo-400" },
-  { layer: "Web App & DB", tech: "PostgreSQL / MERN", iconKey: "Globe", color: "from-purple-500 to-purple-400" },
-  { layer: "Python & AI", tech: "FastAPI / PyTorch", iconKey: "Code2", color: "from-cyan-500 to-cyan-400" },
-  { layer: "Cloud Infra", tech: "AWS / Docker", iconKey: "Cloud", color: "from-amber-500 to-amber-400" },
-] as const;
-
-export const techStack = [
-  "React Native",
-  "Expo",
-  "PostgreSQL",
-  "MongoDB",
-  "Express",
-  "React",
-  "Node.js",
-  "Python",
-  "FastAPI",
-  "AWS",
-  "Docker",
-  "TypeScript",
-] as const;
-
 export const skills = [
   {
     category: "Mobile App Development",
@@ -213,33 +191,3 @@ export const projects: Project[] = [
   },
 ];
 
-export const cloudDevOpsSteps = [
-  {
-    step: "Mobile Architecture",
-    iconKey: "Smartphone",
-    title: "Cross-Platform Mobile Clients",
-    description: "Native-feel iOS & Android apps with offline resilience and fluid UI",
-    technologies: ["React Native", "Expo", "Android Studio", "SQLite", "Zustand"],
-  },
-  {
-    step: "Full-Stack & Relational DBs",
-    iconKey: "Globe",
-    title: "Full-Stack Web & Admin Portals",
-    description: "Multi-portal web applications and relational database schemas",
-    technologies: ["PostgreSQL", "Express", "React", "Node.js", "Next.js"],
-  },
-  {
-    step: "Python & AI Microservices",
-    iconKey: "Code2",
-    title: "AI Inference & Python Services",
-    description: "Fast REST microservices, computer vision pipelines, and LLM RAG",
-    technologies: ["Python", "FastAPI", "PyTorch", "Gemini API", "Pydantic"],
-  },
-  {
-    step: "Cloud & DevOps Infrastructure",
-    iconKey: "Cloud",
-    title: "Containerization & Cloud Deployments",
-    description: "Cloud services, Docker containers, and CI/CD automated deployment pipelines",
-    technologies: ["AWS (EC2, S3)", "Docker", "GitHub Actions", "Linux", "Nginx"],
-  },
-] as const;

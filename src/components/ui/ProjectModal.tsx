@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, CheckCircle2 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { X, ExternalLink } from "lucide-react";
 import githubIcon from "devicon/icons/github/github-original.svg";
 import type { Project } from "../../data/portfolio";
+import ProjectSchematic from "./ProjectSchematic";
 
 interface ProjectModalProps {
   project: Project | null;
@@ -11,6 +12,16 @@ interface ProjectModalProps {
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+function MetaLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-text-muted">
+      {children}
+    </h3>
+  );
+}
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
@@ -65,164 +76,148 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   return (
     <AnimatePresence>
       {project && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4 sm:p-6">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
             onClick={onClose}
-            className="fixed inset-0 bg-slate-950/80 backdrop-blur-md"
+            className="fixed inset-0 bg-bg/85"
           />
 
-          {/* Modal Container */}
+          {/* Dialog */}
           <motion.div
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="project-modal-title"
             tabIndex={-1}
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="relative w-full max-w-2xl bg-surface border border-border rounded-3xl p-6 sm:p-8 shadow-2xl z-10 max-h-[85vh] overflow-y-auto text-left focus:outline-none"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.35, ease: EASE }}
+            className="relative z-10 max-h-[88vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-border bg-surface text-left shadow-[0_32px_80px_-24px_rgba(0,0,0,0.8)] focus:outline-none"
           >
-            {/* Close Button */}
+            {/* Close */}
             <button
               onClick={onClose}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full border border-border bg-surface-elevated flex items-center justify-center text-text-muted hover:text-text hover:border-primary transition-colors cursor-pointer"
-              aria-label="Close project modal"
+              className="absolute right-4 top-4 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-border bg-surface text-text-muted transition-colors hover:border-border-strong hover:text-text"
+              aria-label="Close project details"
             >
-              <X className="w-4 h-4" />
+              <X className="h-4 w-4" />
             </button>
 
-            {/* Header & Badges */}
-            <div className="space-y-2 pr-8">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-primary/20 text-primary-light font-medium border border-primary/30">
-                  {project.category}
-                </span>
-                <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-medium border border-emerald-500/30 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+            {/* Schematic header */}
+            <div className="border-b border-border p-5 pr-14 sm:p-7 sm:pr-16">
+              <ProjectSchematic projectId={project.id} />
+            </div>
+
+            <div className="p-5 sm:p-7">
+              {/* Identity */}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.12em]">
+                <span className={project.status === "Live Project" ? "text-accent" : "text-text-secondary"}>
                   {project.status}
                 </span>
-                <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-medium border border-cyan-500/30">
-                  DB: {project.database}
-                </span>
+                <span aria-hidden className="text-border-strong">/</span>
+                <span className="text-text-muted">{project.category}</span>
+                <span aria-hidden className="text-border-strong">/</span>
+                <span className="text-text-muted">{project.database}</span>
               </div>
 
-              <h2 id="project-modal-title" className="text-2xl sm:text-3xl font-bold tracking-tight text-text break-words">
+              <h2
+                id="project-modal-title"
+                className="mt-3 break-words font-display text-2xl font-semibold tracking-tight text-text sm:text-3xl"
+              >
                 {project.title}
               </h2>
-              <p className="text-sm font-medium text-text-secondary">
-                {project.tagline}
-              </p>
-            </div>
+              <p className="mt-1.5 text-sm text-text-secondary">{project.tagline}</p>
 
-            {/* Portals Section (Special for FoodyGo) */}
-            {project.portals && project.portals.length > 0 && (
-              <div className="mt-6 p-4 rounded-2xl bg-surface-elevated border border-amber-500/30 space-y-2">
-                <h3 className="text-xs font-semibold text-amber-400 uppercase tracking-wider">
-                  Multi-Portal Architecture ({project.portals.length} Applications)
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-text-secondary">
-                  {project.portals.map((portal, idx) => (
-                    <div key={idx} className="p-2 rounded-xl bg-slate-900/60 border border-border/60">
-                      {portal}
-                    </div>
-                  ))}
+              {/* Brief */}
+              <div className="mt-7 grid gap-6 border-t border-border pt-6 sm:grid-cols-2">
+                <div>
+                  <MetaLabel>Problem</MetaLabel>
+                  <p className="mt-2 break-words text-sm leading-relaxed text-text-secondary">
+                    {project.problem}
+                  </p>
+                </div>
+                <div>
+                  <MetaLabel>Solution</MetaLabel>
+                  <p className="mt-2 break-words text-sm leading-relaxed text-text-secondary">
+                    {project.solution}
+                  </p>
                 </div>
               </div>
-            )}
 
-            {/* Problem & Solution */}
-            <div className="mt-6 space-y-4">
-              <div className="p-4 rounded-2xl bg-surface-elevated border border-border space-y-1">
-                <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-                  Problem Statement
-                </h3>
-                <p className="text-sm text-text-secondary leading-relaxed break-words">
-                  {project.problem}
+              {/* Architecture */}
+              <div className="mt-6 border-t border-border pt-6">
+                <MetaLabel>Architecture</MetaLabel>
+                <p className="mt-2 overflow-x-auto whitespace-nowrap rounded-md border border-border bg-surface-elevated px-3 py-2.5 font-mono text-xs text-text-secondary">
+                  {project.architecture}
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-surface-elevated border border-border space-y-1">
-                <h3 className="text-xs font-semibold text-primary-light uppercase tracking-wider">
-                  Engineering Solution
-                </h3>
-                <p className="text-sm text-text-secondary leading-relaxed break-words">
-                  {project.solution}
+              {/* Portals */}
+              {project.portals && project.portals.length > 0 && (
+                <div className="mt-6 border-t border-border pt-6">
+                  <MetaLabel>{project.portals.length} portals</MetaLabel>
+                  <ul className="mt-3 divide-y divide-border/70">
+                    {project.portals.map((portal) => (
+                      <li key={portal} className="py-2 text-sm text-text-secondary">
+                        {portal}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Challenges */}
+              <div className="mt-6 border-t border-border pt-6">
+                <MetaLabel>Engineering challenges</MetaLabel>
+                <ul className="mt-3 space-y-2">
+                  {project.challenges.map((challenge) => (
+                    <li key={challenge} className="flex items-start gap-2.5 text-sm leading-relaxed text-text-secondary">
+                      <span aria-hidden className="mt-[0.45rem] h-px w-3 shrink-0 bg-accent" />
+                      <span>{challenge}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Stack */}
+              <div className="mt-6 border-t border-border pt-6">
+                <MetaLabel>Stack</MetaLabel>
+                <p className="mt-2.5 font-mono text-xs leading-loose tracking-wide text-text-secondary">
+                  {project.technologies.join(" · ")}
                 </p>
               </div>
-            </div>
 
-            {/* Architecture Diagram */}
-            <div className="mt-6 p-4 rounded-2xl bg-slate-950 border border-border space-y-2">
-              <h3 className="text-xs font-semibold text-cyan-400 uppercase tracking-wider font-mono">
-                System Architecture Flow
-              </h3>
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-300 overflow-x-auto whitespace-nowrap">
-                {project.architecture}
-              </div>
-            </div>
-
-            {/* Key Engineering Challenges Solved */}
-            <div className="mt-6 space-y-2">
-              <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-                Key Engineering Challenges Solved
-              </h3>
-              <ul className="space-y-1.5 text-xs text-text-secondary">
-                {project.challenges.map((challenge, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-primary-light mt-0.5">•</span>
-                    <span>{challenge}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Technologies Stack */}
-            <div className="mt-6 space-y-2">
-              <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-                Technologies & Libraries
-              </h3>
-              <div className="flex flex-wrap gap-1.5">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-2.5 py-1 rounded-lg bg-surface-elevated border border-border text-xs font-mono text-text-secondary"
+              {/* Actions */}
+              <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-border pt-6">
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 font-mono text-xs font-medium uppercase tracking-[0.08em] text-accent-ink transition-colors hover:bg-accent/90 active:scale-[0.98]"
                   >
-                    {tech}
-                  </span>
-                ))}
+                    <img src={githubIcon} alt="" className="h-4 w-4 shrink-0" />
+                    Repository
+                  </a>
+                )}
+                {project.demo && (
+                  <a
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2.5 font-mono text-xs uppercase tracking-[0.08em] text-text-secondary transition-colors hover:border-border-strong hover:text-text"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Live demo
+                  </a>
+                )}
               </div>
-            </div>
-
-            {/* Action Links */}
-            <div className="mt-8 pt-4 border-t border-border flex flex-wrap items-center gap-3">
-              {project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-medium text-white hover:opacity-90 transition-all active:scale-95"
-                >
-                  <img src={githubIcon} alt="" className="w-4 h-4 shrink-0 tech-icon-mono" />
-                  View Repository
-                </a>
-              )}
-              {project.demo && (
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface-elevated px-5 py-2.5 text-xs font-medium text-text hover:text-primary transition-colors"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  Live Demo
-                </a>
-              )}
             </div>
           </motion.div>
         </div>

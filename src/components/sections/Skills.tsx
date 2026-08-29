@@ -49,7 +49,7 @@ export default function Skills() {
                     {group.badge}
                   </p>
                 </div>
-                <dd className="font-mono text-xs leading-loose tracking-wide text-text-secondary">
+                <dd className="font-mono text-xs leading-loose tracking-wide text-text-secondary break-words">
                   {group.items.map((item, i) => (
                     <span key={item}>
                       <span className="hover:text-text transition-colors">{item}</span>

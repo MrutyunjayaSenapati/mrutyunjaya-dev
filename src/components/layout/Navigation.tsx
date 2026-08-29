@@ -116,7 +116,7 @@ export default function Navigation() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.35, ease: EASE }}
-            className="overflow-hidden border-t border-border md:hidden"
+            className="overflow-y-auto max-h-[85vh] border-t border-border bg-surface/98 backdrop-blur-xl md:hidden"
           >
             <div className="flex flex-col gap-1 px-4 pb-8 pt-4">
               {navItems.map((item, idx) => (

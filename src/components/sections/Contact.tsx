@@ -128,7 +128,7 @@ export default function Contact() {
             rel="noopener noreferrer"
             className="link-underline py-1 text-text-secondary transition-colors hover:text-text"
           >
-            Résumé ↗
+            Resume ↗
           </a>
         </motion.div>
       </div>

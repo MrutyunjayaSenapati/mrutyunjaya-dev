@@ -91,7 +91,7 @@ export default function Navigation() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-md border border-border px-3.5 py-2 font-mono text-xs uppercase tracking-[0.08em] text-text-secondary transition-colors hover:border-border-strong hover:text-text"
           >
-            Résumé
+            Resume
             <ArrowUpRight className="h-3 w-3" />
           </a>
         </nav>
@@ -142,7 +142,7 @@ export default function Navigation() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="mt-5 inline-flex items-center justify-center gap-2 rounded-md bg-accent py-3 font-mono text-xs font-medium uppercase tracking-[0.08em] text-accent-ink"
               >
-                Résumé
+                Resume
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             </div>

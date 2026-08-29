@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown } from "lucide-react";
-import type { ReactNode } from "react";
+import { ArrowDown, ArrowUpRight, Mail } from "lucide-react";
 import { personal } from "../../data/portfolio";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -25,23 +24,6 @@ function useISTClock() {
   return time;
 }
 
-function RevealLine({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
-  const reduced = useReducedMotion();
-
-  return (
-    <span className="block overflow-hidden pb-[0.08em] -mb-[0.08em]">
-      <motion.span
-        className="block will-change-transform"
-        initial={reduced ? false : { y: "112%" }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.9, ease: EASE, delay }}
-      >
-        {children}
-      </motion.span>
-    </span>
-  );
-}
-
 export default function Hero() {
   const ref = useRef<HTMLElement | null>(null);
   const reduced = useReducedMotion();
@@ -63,88 +45,143 @@ export default function Hero() {
   }, []);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, -110]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.97]);
-  const fade = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
     <section
       ref={ref}
       id="hero"
       aria-label="Introduction"
-      className="relative flex min-h-svh flex-col justify-center overflow-hidden"
+      className="relative flex min-h-[92vh] flex-col justify-center overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28"
     >
       <motion.div
-        style={reduced ? undefined : { y, scale, opacity: fade }}
-        className="relative mx-auto w-full max-w-6xl px-4 pb-24 pt-32 sm:px-6"
+        style={reduced ? undefined : { y, opacity }}
+        className="relative mx-auto w-full max-w-4xl px-5 sm:px-8"
       >
-        {/* Telemetry line */}
-        <motion.p
-          initial={reduced ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.55 }}
-          className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs tracking-wide text-text-muted"
-        >
-          <span>India</span>
-          <span aria-hidden className="text-border-strong">/</span>
-          {clock && (
-            <>
-              <span>
-                <time dateTime={clock}>{clock}</time> IST
-              </span>
-              <span aria-hidden className="text-border-strong">/</span>
-            </>
-          )}
-          <span className="inline-flex items-center gap-2 text-text-secondary">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
-            </span>
-            {personal.status}
-          </span>
-        </motion.p>
+        {/* Top Section: Info + Prominent Sprite Avatar */}
+        <div className="flex flex-col-reverse gap-8 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
+          {/* Left Column: Name & Callout */}
+          <div className="flex-1">
+            <motion.h1
+              initial={reduced ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: EASE }}
+              className="font-mono text-2xl font-bold tracking-tight text-text sm:text-3xl lg:text-4xl"
+            >
+              {personal.name}
+              <span className="text-accent">.</span>
+            </motion.h1>
 
-        {/* Display statement */}
-        <h1 className="mt-10 font-display font-bold text-hero">
-          <span className="sr-only">{personal.name} — </span>
-          <RevealLine delay={0.05}>Mobile &amp; full-stack</RevealLine>
-          <RevealLine delay={0.16}>
-            software engineer<span className="text-accent">.</span>
-          </RevealLine>
-        </h1>
+            {/* The Signature Accent Callout Block */}
+            <motion.div
+              initial={reduced ? false : { opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}
+              className="mt-8 border-l-2 border-accent/80 pl-5 sm:mt-10 sm:pl-6 space-y-3"
+            >
+              <div>
+                <p className="font-mono text-sm font-semibold text-text sm:text-base">
+                  Software Engineer <span className="text-accent">@ Strivesteam</span>
+                </p>
+              </div>
 
-        {/* One supporting sentence */}
-        <motion.p
-          initial={reduced ? false : { opacity: 0, y: 14 }}
+              <div className="pt-0.5 text-sm text-text-secondary leading-relaxed sm:text-[15px]">
+                <p>
+                  Engineering production React Native mobile apps &amp; high-performance backend systems.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Prominent Sprite Avatar */}
+          <motion.div
+            initial={reduced ? false : { opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
+            className="flex flex-col items-start sm:items-end shrink-0"
+          >
+            <div className="group relative">
+              <div className="relative h-32 w-32 overflow-hidden rounded-full border-2 border-border-strong bg-surface p-1 shadow-md sm:h-40 sm:w-40 md:h-44 md:w-44 transition-all duration-300 group-hover:border-accent/60 group-hover:scale-[1.02]">
+                <img
+                  src="/avatar.png"
+                  alt={personal.name}
+                  className="h-full w-full rounded-full object-cover"
+                  style={{ imageRendering: "pixelated" }}
+                />
+              </div>
+
+              {/* Status pill under avatar */}
+              <div className="mt-2.5 flex w-full items-center justify-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+                </span>
+                <span>online &middot; building</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* CURRENTLY Section */}
+        <motion.div
+          initial={reduced ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: EASE, delay: 0.5 }}
-          className="mt-9 max-w-[54ch] text-base leading-relaxed text-text-secondary sm:text-lg"
+          transition={{ duration: 0.6, ease: EASE, delay: 0.24 }}
+          className="mt-12 sm:mt-14"
         >
-          I&rsquo;m Mrutyunjaya Senapati. I build React Native apps and the systems behind
-          them &mdash; PostgreSQL schemas, Node &amp; FastAPI services, shipped on AWS.
-        </motion.p>
+          <h2 className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-text-muted">
+            Currently
+          </h2>
+          <p className="mt-3 font-mono text-sm text-text-secondary sm:text-base leading-relaxed">
+            Building high-performance mobile apps and systems from zero to production.
+          </p>
 
-        {/* Actions */}
+          {/* Telemetry pill row */}
+          <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-text-muted">
+            <span className="inline-flex items-center gap-2 text-text-secondary">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+              </span>
+              India{clock ? `, ${clock} IST` : ""}
+            </span>
+            <span aria-hidden className="text-border-strong">&middot;</span>
+            <span className="text-text-secondary">{personal.status}</span>
+          </div>
+        </motion.div>
+
+        {/* Action Controls */}
         <motion.div
           initial={reduced ? false : { opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: EASE, delay: 0.68 }}
-          className="mt-11 flex flex-wrap items-center gap-x-6 gap-y-4"
+          transition={{ duration: 0.6, ease: EASE, delay: 0.36 }}
+          className="mt-10 flex flex-wrap items-center gap-4 sm:mt-12"
         >
           <a
             href="#projects"
-            className="group inline-flex items-center gap-2.5 rounded-md bg-accent px-5 py-3 font-mono text-xs font-medium uppercase tracking-[0.08em] text-accent-ink transition-colors hover:bg-accent/90 active:scale-[0.98]"
+            className="group inline-flex items-center gap-2 rounded-md bg-text px-4 py-2.5 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-bg transition-colors hover:bg-accent hover:text-accent-ink active:scale-[0.98]"
           >
             View work
             <ArrowDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
           </a>
+
           <a
             href={personal.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="link-underline px-0.5 py-3 font-mono text-xs uppercase tracking-[0.08em] text-text-secondary transition-colors hover:text-text"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border px-4 py-2.5 font-mono text-xs uppercase tracking-[0.08em] text-text-secondary transition-colors hover:border-border-strong hover:text-text active:scale-[0.98]"
           >
-            Résumé ↗
+            Resume
+            <ArrowUpRight className="h-3.5 w-3.5 text-text-muted" />
+          </a>
+
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-1.5 px-3 py-2.5 font-mono text-xs uppercase tracking-[0.08em] text-text-muted transition-colors hover:text-accent"
+          >
+            <Mail className="h-3.5 w-3.5" />
+            Contact
           </a>
         </motion.div>
       </motion.div>
@@ -152,15 +189,15 @@ export default function Hero() {
       {/* Scroll cue */}
       <div
         aria-hidden
-        className={`absolute bottom-8 left-1/2 hidden -translate-x-1/2 transition-opacity duration-500 sm:block ${
+        className={`absolute bottom-6 left-1/2 hidden -translate-x-1/2 transition-opacity duration-500 sm:block ${
           cueHidden ? "opacity-0" : "opacity-100"
         }`}
       >
-        <div className="relative h-12 w-px overflow-hidden bg-border-strong">
+        <div className="relative h-10 w-px overflow-hidden bg-border-strong">
           {!reduced && (
             <motion.span
-              className="absolute left-0 top-0 h-4 w-px bg-accent"
-              animate={{ y: [-16, 48] }}
+              className="absolute left-0 top-0 h-3 w-px bg-accent"
+              animate={{ y: [-12, 40] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             />
           )}

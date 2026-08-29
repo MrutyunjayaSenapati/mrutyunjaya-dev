@@ -61,7 +61,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: EASE, delay: 0.08 }}
-          className="mt-6 max-w-[48ch] leading-relaxed text-text-secondary"
+          className="mt-6 w-full max-w-[56ch] leading-relaxed text-text-secondary"
         >
           Open to mobile &amp; full-stack engineering roles — or a hard problem worth shipping.
         </motion.p>
@@ -77,7 +77,7 @@ export default function Contact() {
           <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
             <a
               href={`mailto:${personal.email}`}
-              className="link-underline break-all font-display text-2xl font-medium tracking-tight text-text decoration-2 underline-offset-[10px] sm:text-3xl md:text-4xl"
+              className="link-underline font-display text-base font-medium tracking-tight text-text decoration-2 underline-offset-[8px] xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl break-all sm:break-normal"
             >
               {personal.email}
             </a>

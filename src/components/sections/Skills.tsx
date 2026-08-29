@@ -49,13 +49,13 @@ export default function Skills() {
                     {group.badge}
                   </p>
                 </div>
-                <dd className="font-mono text-xs leading-loose tracking-wide text-text-secondary break-words">
-                  {group.items.map((item, i) => (
-                    <span key={item}>
-                      <span className="hover:text-text transition-colors">{item}</span>
-                      {i < group.items.length - 1 && (
-                        <span className="mx-2 text-border-strong">&middot;</span>
-                      )}
+                <dd className="flex flex-wrap gap-1.5 sm:gap-2">
+                  {group.items.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded border border-border bg-surface px-2.5 py-1 font-mono text-xs text-text-secondary transition-colors hover:border-border-strong hover:text-text"
+                    >
+                      {item}
                     </span>
                   ))}
                 </dd>

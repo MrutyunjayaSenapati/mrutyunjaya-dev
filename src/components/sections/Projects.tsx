@@ -1,139 +1,179 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import { projects, type Project } from "../../data/portfolio";
 import ProjectModal from "../ui/ProjectModal";
+import ProjectSchematic from "../ui/ProjectSchematic";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function Projects() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [canPreview] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: fine)").matches &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+  const reduced = useReducedMotion();
 
-  const categories = ["All", "Mobile Apps & AI", "Full-Stack Monorepos", "MERN Stack"];
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 200, damping: 26, mass: 0.55 });
+  const springY = useSpring(mouseY, { stiffness: 200, damping: 26, mass: 0.55 });
 
-  const filteredProjects = selectedCategory === "All"
-    ? projects
-    : projects.filter((p) => p.category === selectedCategory);
+  const hovered = projects.find((p) => p.id === hoveredId) ?? null;
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!canPreview || reduced) return;
+    const pad = 12;
+    const width = 320;
+    const x = Math.min(Math.max(e.clientX + 32, pad), window.innerWidth - width - pad);
+    const y = Math.min(Math.max(e.clientY - 110, pad), window.innerHeight - 260 - pad);
+    mouseX.set(x);
+    mouseY.set(y);
+  };
 
   return (
-    <section id="projects" className="py-20 relative">
-      <div className="max-w-6xl mx-auto px-4 text-left">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
-          <div className="space-y-2">
-            <span className="text-xs font-mono px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary-light font-medium">
-              Featured Software Engineering Work
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] text-text">
-              Projects & Production Systems
-            </h2>
-            <p className="text-sm text-text-secondary max-w-xl">
-              Showcasing mobile applications, multi-portal monorepos with PostgreSQL, and real-time backend microservices.
-            </p>
-          </div>
+    <section id="projects" aria-label="Selected work" className="relative scroll-mt-16 py-24 sm:py-32">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        {/* Heading */}
+        <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+          <motion.h2
+            initial={reduced ? false : { opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="font-display font-bold text-display"
+          >
+            Selected work<span className="text-accent">.</span>
+          </motion.h2>
+          <motion.p
+            initial={reduced ? false : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="font-mono text-xs tracking-wide text-text-muted"
+          >
+            {projects.length} builds — mobile, monorepo, real-time
+          </motion.p>
+        </div>
 
-          {/* Category Filter Tabs */}
-          <div className="flex flex-wrap gap-1.5 p-1 rounded-2xl bg-surface-elevated border border-border">
-            {categories.map((cat) => (
-              <button
-                key={cat}
+        {/* Editorial rows */}
+        <div
+          className="mt-14 border-t border-border"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={() => setHoveredId(null)}
+        >
+          {projects.map((project) => {
+            const featured = project.featured;
+            return (
+              <motion.button
+                key={project.id}
                 type="button"
-                onClick={() => setSelectedCategory(cat)}
-                aria-pressed={selectedCategory === cat}
-                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
-                  selectedCategory === cat
-                    ? "bg-primary text-white shadow-md"
-                    : "text-text-muted hover:text-text"
+                onClick={() => setSelectedProject(project)}
+                onMouseEnter={() => setHoveredId(project.id)}
+                onFocus={() => setHoveredId(null)}
+                initial={reduced ? false : { opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.65, ease: EASE }}
+                aria-haspopup="dialog"
+                className={`group block w-full cursor-pointer border-b border-border text-left transition-colors focus-visible:outline-none ${
+                  featured ? "py-10 sm:py-14" : "py-8 sm:py-10"
                 }`}
               >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
+                <div
+                  className={`grid gap-6 ${
+                    featured ? "lg:grid-cols-12 lg:gap-10" : "lg:grid-cols-12"
+                  }`}
+                >
+                  {/* Text block */}
+                  <div className={featured ? "lg:col-span-7" : "lg:col-span-9"}>
+                    <div className="flex items-start justify-between gap-4">
+                      <h3
+                        className={`link-underline font-display font-semibold text-title decoration-1 underline-offset-8 group-hover:text-text ${
+                          featured ? "" : "text-xl sm:text-2xl"
+                        }`}
+                      >
+                        {project.title}
+                      </h3>
+                      <ArrowUpRight
+                        className="mt-1 h-4 w-4 shrink-0 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100"
+                        aria-hidden
+                      />
+                    </div>
 
-        {/* Projects Cards Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project, index) => (
-            <motion.button
-              key={project.id}
-              type="button"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              onClick={() => setSelectedProject(project)}
-              className="rounded-3xl border border-border bg-surface p-6 flex flex-col justify-between glow-card relative overflow-hidden group cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-            >
-              {/* Card Header & Status */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-primary/15 text-primary-light border border-primary/20 font-medium">
-                    {project.category}
-                  </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 font-medium">
-                    {project.status}
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold text-text group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-xs font-medium text-text-secondary">
-                  {project.tagline}
-                </p>
-                <p className="text-xs text-text-muted line-clamp-3 leading-relaxed">
-                  {project.problem}
-                </p>
-
-                {/* Portals Preview Pill (FoodyGo Special) */}
-                {project.portals && (
-                  <div className="p-2.5 rounded-xl bg-slate-900/80 border border-amber-500/30 text-[10px] space-y-1">
-                    <span className="font-bold text-amber-400">4 Portals (PostgreSQL):</span>
-                    <div className="text-slate-400">Customer App • Partner App • Admin Web • Restaurant Web</div>
-                  </div>
-                )}
-              </div>
-
-              {/* Card Footer Tech Stack & Details CTA */}
-              <div className="mt-6 pt-4 border-t border-border space-y-3">
-                <div className="flex flex-wrap gap-1">
-                  {project.technologies.slice(0, 4).map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 py-0.5 rounded-md bg-surface-elevated text-[10px] font-mono text-text-muted border border-border"
+                    <p
+                      className={`mt-2 max-w-[52ch] leading-relaxed text-text-secondary ${
+                        featured ? "text-base" : "text-sm"
+                      }`}
                     >
-                      {tech}
-                    </span>
-                  ))}
-                  {project.technologies.length > 4 && (
-                    <span className="px-2 py-0.5 rounded-md bg-surface-elevated text-[10px] font-mono text-text-muted">
-                      +{project.technologies.length - 4}
-                    </span>
+                      {project.tagline}
+                    </p>
+
+                    <div className="mt-5 space-y-1.5 font-mono text-xs tracking-wide text-text-muted">
+                      <p>
+                        <span className={project.status === "Live Project" ? "text-accent" : undefined}>
+                          {project.status}
+                        </span>
+                        <span aria-hidden>{" / "}</span>
+                        <span>{project.database}</span>
+                      </p>
+                      <p>{project.technologies.slice(0, 5).join(" · ")}</p>
+                    </div>
+                  </div>
+
+                  {/* Inline schematic for featured work */}
+                  {featured && (
+                    <div className="hidden self-center lg:col-span-5 lg:block">
+                      <div className="transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-1">
+                        <ProjectSchematic projectId={project.id} />
+                      </div>
+                    </div>
                   )}
                 </div>
-
-                <div className="flex items-center justify-between text-xs text-primary-light font-medium pt-1">
-                  <span>Architecture Deep Dive ➔</span>
-                  <span className="text-[10px] text-text-muted">Click for Specs</span>
-                </div>
-              </div>
-            </motion.button>
-          ))}
+              </motion.button>
+            );
+          })}
         </div>
-
-        {filteredProjects.length === 0 && (
-          <div className="text-center py-16 rounded-3xl border border-dashed border-border">
-            <p className="text-sm text-text-muted">
-              No projects in this category yet — check back soon.
-            </p>
-          </div>
-        )}
       </div>
 
-      {/* Architectural Modal Overlay */}
-      <ProjectModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
+      {/* Cursor-following preview */}
+      <AnimatePresence>
+        {hovered && canPreview && !reduced && (
+          <motion.div
+            key="cursor-preview"
+            aria-hidden
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.25, ease: EASE }}
+            style={{ x: springX, y: springY }}
+            className="pointer-events-none fixed left-0 top-0 z-30 hidden w-80 md:block"
+          >
+            <div className="overflow-hidden rounded-lg border border-border-strong bg-surface shadow-[0_24px_60px_-20px_rgba(0,0,0,0.7)]">
+              <ProjectSchematic projectId={hovered.id} />
+              <div className="flex items-center justify-between border-t border-border px-3 py-2 font-mono text-[11px] tracking-wide">
+                <span className="text-text-secondary">{hovered.title}</span>
+                <span className="inline-flex items-center gap-1.5 text-accent">
+                  View case
+                  <ArrowUpRight className="h-3 w-3" />
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </section>
   );
 }

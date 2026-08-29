@@ -2,37 +2,22 @@ import { ArrowUp } from "lucide-react";
 import { personal } from "../../data/portfolio";
 
 export default function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <footer className="py-12 border-t border-border bg-surface text-left">
-      <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-        {/* Brand & Copy */}
-        <div className="space-y-1 text-center md:text-left">
-          <div className="text-sm font-bold text-text">
-            {personal.name}
-          </div>
-          <p className="text-xs text-text-muted">
-            Software Engineer • React Native, Full-Stack & AWS Architecture
-          </p>
-        </div>
-
-        {/* Back to Top & Copyright */}
-        <div className="flex items-center gap-4">
-          <span className="text-xs font-mono text-text-muted">
-            © {new Date().getFullYear()} All rights reserved.
-          </span>
-          <button
-            onClick={scrollToTop}
-            className="p-2.5 rounded-full border border-border bg-surface-elevated text-text-muted hover:text-text hover:border-primary transition-colors flex items-center justify-center text-xs cursor-pointer"
-            aria-label="Scroll back to top"
-            title="Back to top"
-          >
-            <ArrowUp className="w-4 h-4" />
-          </button>
-        </div>
+    <footer className="border-t border-border">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-8 sm:px-6">
+        <p className="font-mono text-xs tracking-wide text-text-muted">
+          © {new Date().getFullYear()} {personal.name}
+        </p>
+        <p className="font-mono text-xs tracking-wide text-text-muted">
+          React Native · Full-stack · AWS
+        </p>
+        <a
+          href="#hero"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-text-muted transition-colors hover:border-border-strong hover:text-text"
+          aria-label="Back to top"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </a>
       </div>
     </footer>
   );

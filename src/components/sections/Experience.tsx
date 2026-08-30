@@ -40,7 +40,7 @@ export default function Experience() {
                 <p className="mt-2 max-w-[60ch] text-sm leading-relaxed text-text-secondary">
                   {item.description}
                 </p>
-                <p className="mt-3 font-mono text-xs tracking-wide text-text-muted">
+                <p className="mt-3 font-mono text-xs tracking-wide text-text-muted break-words">
                   {item.tags.join(" · ")}
                 </p>
               </div>

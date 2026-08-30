@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -20,17 +20,17 @@ type Expression = "idle" | "move" | "sleep" | "happy" | "press";
 
 const BODY_VARIANTS: Variants = {
   idle: { scaleX: 1, scaleY: 0.96, y: 0 },
-  sleep: { scaleX: 1.02, scaleY: 0.93, y: 2 },
-  press: { scaleX: 1.18, scaleY: 0.7, y: 4 },
+  sleep: { scaleX: 1.02, scaleY: 0.93, y: 1 },
+  press: { scaleX: 1.18, scaleY: 0.7, y: 2.5 },
   move: {
-    y: [0, -8, 0],
-    scaleY: [1, 1.06, 0.92],
+    y: [0, -5, 0],
+    scaleY: [1, 1.06, 0.94],
     transition: { duration: 0.42, repeat: Infinity, ease: "easeOut" },
   },
   happy: {
     scaleX: [1.18, 0.95, 1],
     scaleY: [0.7, 1.1, 1],
-    y: [4, -2, 0],
+    y: [2, -1, 0],
     transition: { duration: 0.4, ease: "easeOut" },
   },
 };
@@ -42,7 +42,7 @@ const SHADOW_VARIANTS: Variants = {
   move: {
     scaleX: [1, 0.55, 0.85],
     opacity: [0.5, 0.18, 0.38],
-    y: [0, -1, 0],
+    y: [0, -0.6, 0],
     transition: { duration: 0.42, repeat: Infinity, ease: "easeOut" },
   },
   happy: { scaleX: 1, opacity: 0.5, y: 0 },
@@ -50,9 +50,9 @@ const SHADOW_VARIANTS: Variants = {
 
 const EYE_VARIANTS: Variants = {
   idle: { scaleY: 1, y: 0 },
-  move: { scaleY: 1.18, y: -0.5 },
-  sleep: { scaleY: 0.45, y: 1.4 },
-  happy: { scaleY: 0.28, y: 0.8 },
+  move: { scaleY: 1.18, y: -0.3 },
+  sleep: { scaleY: 0.45, y: 0.9 },
+  happy: { scaleY: 0.28, y: 0.5 },
   press: { scaleY: 1, y: 0 },
 };
 
@@ -77,8 +77,8 @@ export default function CaretSprite() {
   const springX = useSpring(x, { stiffness: 170, damping: 12, mass: 0.7 });
   const springY = useSpring(y, { stiffness: 170, damping: 12, mass: 0.7 });
   const velocityX = useVelocity(springX);
-  const lean = useTransform(velocityX, [-700, 700], [-9, 9], { clamp: true });
-  const eyeX = useTransform(velocityX, [-500, 500], [-1.6, 1.6], { clamp: true });
+  const lean = useTransform(velocityX, [-600, 600], [-8, 8], { clamp: true });
+  const eyeX = useTransform(velocityX, [-400, 400], [-1.2, 1.2], { clamp: true });
 
   const moveTimer = useRef(0);
   const sleepTimer = useRef(0);
@@ -117,8 +117,8 @@ export default function CaretSprite() {
     };
 
     const move = (e: MouseEvent) => {
-      x.set(e.clientX + 18);
-      y.set(e.clientY + 22);
+      x.set(e.clientX + 14);
+      y.set(e.clientY + 16);
       setVisible(true);
       if (!movingRef.current) {
         movingRef.current = true;
@@ -153,7 +153,7 @@ export default function CaretSprite() {
     };
   }, [enabled, reduced, x, y]);
 
-  // Blinking â€” slower when dozing, 30% chance of a double-blink
+  // Blinking
   useEffect(() => {
     if (!enabled || reduced) return;
     let openTimer = 0;
@@ -182,7 +182,7 @@ export default function CaretSprite() {
     };
   }, [enabled, reduced]);
 
-  // Idle fidget â€” a quick glance around every 6â€“9s while resting
+  // Idle fidget
   useEffect(() => {
     if (!enabled || reduced) return;
     const schedule = () => {
@@ -219,10 +219,10 @@ export default function CaretSprite() {
       transition={{ duration: 0.2 }}
       style={{ x: springX, y: springY }}
     >
-      <div className="relative h-8 w-[26px]">
+      <div className="relative h-5 w-5">
         {/* Ground shadow */}
         <motion.div
-          className="absolute -bottom-[5px] left-1/2 h-[6px] w-[22px] -translate-x-1/2 rounded-full blur-[1px]"
+          className="absolute -bottom-[3px] left-1/2 h-[3.5px] w-[15px] -translate-x-1/2 rounded-full blur-[0.8px]"
           style={{
             background:
               "radial-gradient(closest-side, rgba(236,234,228,0.4), transparent 72%)",
@@ -233,14 +233,15 @@ export default function CaretSprite() {
         />
 
         <motion.div
-          className="absolute inset-x-0 top-0"
+          className="absolute inset-0"
           style={{ rotate: lean, transformOrigin: "50% 90%" }}
           animate={expression}
           variants={BODY_VARIANTS}
           transition={{ duration: 0.18 }}
         >
-          <svg width="26" height="32" viewBox="0 0 26 32" aria-hidden="true">
-            <rect x="1" y="1" width="24" height="30" rx="5.5" fill="#4ade80" />
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+            {/* Round circular body */}
+            <circle cx="10" cy="10" r="9" fill="#4ade80" />
             {/* direction of travel */}
             <motion.g style={{ x: eyeX }}>
               {/* mood */}
@@ -252,7 +253,7 @@ export default function CaretSprite() {
               >
                 {/* fidget glance */}
                 <motion.g
-                  animate={{ x: fidgeting ? [0, -2.2, 0, 2.2, 0] : 0 }}
+                  animate={{ x: fidgeting ? [0, -1.4, 0, 1.4, 0] : 0 }}
                   transition={{ duration: 1.4, ease: "easeInOut" }}
                 >
                   {/* blink */}
@@ -261,8 +262,8 @@ export default function CaretSprite() {
                     animate={{ scaleY: blinking ? 0.08 : 1 }}
                     transition={{ duration: 0.09 }}
                   >
-                    <rect x="7" y="11.5" width="3.4" height="7" rx="1.7" fill="#06220f" />
-                    <rect x="15.6" y="11.5" width="3.4" height="7" rx="1.7" fill="#06220f" />
+                    <rect x="5.8" y="7.5" width="2.3" height="4.6" rx="1.15" fill="#06220f" />
+                    <rect x="11.9" y="7.5" width="2.3" height="4.6" rx="1.15" fill="#06220f" />
                   </motion.g>
                 </motion.g>
               </motion.g>

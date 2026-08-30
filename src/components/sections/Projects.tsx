@@ -68,7 +68,7 @@ export default function Projects() {
 
         {/* Editorial rows */}
         <div
-          className="mt-14 border-t border-border"
+          className="mt-10 sm:mt-14 border-t border-border"
           onMouseMove={handleMouseMove}
           onMouseLeave={() => setHoveredId(null)}
         >
@@ -87,7 +87,7 @@ export default function Projects() {
                 transition={{ duration: 0.65, ease: EASE }}
                 aria-haspopup="dialog"
                 className={`group block w-full cursor-pointer border-b border-border text-left transition-colors focus-visible:outline-none ${
-                  featured ? "py-10 sm:py-14" : "py-8 sm:py-10"
+                  featured ? "py-8 sm:py-12" : "py-6 sm:py-9"
                 }`}
               >
                 <div
@@ -96,7 +96,7 @@ export default function Projects() {
                   }`}
                 >
                   {/* Text block */}
-                  <div className={featured ? "lg:col-span-7" : "lg:col-span-9"}>
+                  <div className={featured ? "lg:col-span-7" : "lg:col-span-12"}>
                     <div className="flex items-start justify-between gap-4">
                       <h3
                         className={`link-underline font-display font-semibold text-title decoration-1 underline-offset-8 group-hover:text-text ${
@@ -106,32 +106,50 @@ export default function Projects() {
                         {project.title}
                       </h3>
                       <ArrowUpRight
-                        className="mt-1 h-4 w-4 shrink-0 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100"
+                        className="mt-1 h-4 w-4 shrink-0 text-accent opacity-80 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
                         aria-hidden
                       />
                     </div>
 
                     <p
-                      className={`mt-2 max-w-[52ch] leading-relaxed text-text-secondary ${
+                      className={`mt-2.5 w-full leading-relaxed text-text-secondary ${
                         featured ? "text-base" : "text-sm"
                       }`}
                     >
                       {project.tagline}
                     </p>
 
-                    <div className="mt-5 space-y-1.5 font-mono text-xs tracking-wide text-text-muted">
-                      <p>
-                        <span className={project.status === "Live Project" ? "text-accent" : undefined}>
+                    {/* Metadata & Stack */}
+                    <div className="mt-4 sm:mt-5 space-y-2 font-mono text-xs tracking-wide">
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-text-muted">
+                        <span className={project.status === "Live Project" ? "text-accent inline-flex items-center gap-1.5" : "text-text-secondary"}>
+                          {project.status === "Live Project" && (
+                            <span className="relative flex h-1.5 w-1.5">
+                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
+                              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+                            </span>
+                          )}
                           {project.status}
                         </span>
-                        <span aria-hidden>{" / "}</span>
-                        <span>{project.database}</span>
-                      </p>
-                      <p>{project.technologies.slice(0, 5).join(" · ")}</p>
+                        <span aria-hidden className="text-border-strong">/</span>
+                        <span className="text-text-secondary">{project.database}</span>
+                      </div>
+
+                      {/* Tech stack badges */}
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {project.technologies.map((tech) => (
+                          <span
+                            key={tech}
+                            className="inline-block rounded border border-border bg-surface px-2 py-0.5 text-[11px] text-text-secondary group-hover:border-border-strong group-hover:text-text transition-colors"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Inline schematic for featured work */}
+                  {/* Inline schematic for featured work on large screens */}
                   {featured && (
                     <div className="hidden self-center lg:col-span-5 lg:block">
                       <div className="transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-1">

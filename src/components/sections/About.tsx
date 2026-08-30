@@ -31,7 +31,7 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.6, ease: EASE }}
-            className="max-w-[54ch] text-lg leading-relaxed text-text-secondary lg:col-span-7"
+            className="w-full text-base sm:text-lg leading-relaxed text-text-secondary lg:col-span-7"
           >
             Engineering production mobile apps and full-stack systems at Strivesteam. Off the
             clock I sharpen the craft on real builds &mdash; the three projects above are mine,

@@ -59,26 +59,41 @@ export default function Hero() {
         style={reduced ? undefined : { y, opacity }}
         className="relative mx-auto w-full max-w-4xl px-5 sm:px-8"
       >
-        {/* Top Section: Info + Prominent Sprite Avatar */}
-        <div className="flex flex-col-reverse gap-8 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
+        {/* Top Section: Info + Sprite Avatar (Responsive: Row on mobile & desktop) */}
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
           {/* Left Column: Name & Callout */}
-          <div className="flex-1">
-            <motion.h1
-              initial={reduced ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: EASE }}
-              className="font-mono text-2xl font-bold tracking-tight text-text sm:text-3xl lg:text-4xl"
-            >
-              {personal.name}
-              <span className="text-accent">.</span>
-            </motion.h1>
+          <div className="flex-1 min-w-0">
+            {/* Mobile Header: Name + Avatar in single row on small screens */}
+            <div className="flex items-center justify-between gap-4 sm:block">
+              <motion.h1
+                initial={reduced ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, ease: EASE }}
+                className="font-mono text-xl font-bold tracking-tight text-text xs:text-2xl sm:text-3xl lg:text-4xl"
+              >
+                {personal.name}
+                <span className="text-accent">.</span>
+              </motion.h1>
+
+              {/* Mobile avatar visible only on < sm */}
+              <div className="sm:hidden shrink-0">
+                <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-border-strong bg-surface p-0.5 shadow-sm">
+                  <img
+                    src="/avatar.png"
+                    alt={personal.name}
+                    className="h-full w-full rounded-full object-cover"
+                    style={{ imageRendering: "pixelated" }}
+                  />
+                </div>
+              </div>
+            </div>
 
             {/* The Signature Accent Callout Block */}
             <motion.div
               initial={reduced ? false : { opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}
-              className="mt-8 border-l-2 border-accent/80 pl-5 sm:mt-10 sm:pl-6 space-y-3"
+              className="mt-6 border-l-2 border-accent/80 pl-4 sm:mt-10 sm:pl-6 space-y-3"
             >
               <div>
                 <p className="font-mono text-sm font-semibold text-text sm:text-base">
@@ -94,15 +109,15 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right Column: Prominent Sprite Avatar */}
+          {/* Desktop/Tablet Avatar (visible on sm and above) */}
           <motion.div
             initial={reduced ? false : { opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
-            className="flex flex-col items-start sm:items-end shrink-0"
+            className="hidden sm:flex flex-col items-end shrink-0"
           >
             <div className="group relative">
-              <div className="relative h-32 w-32 overflow-hidden rounded-full border-2 border-border-strong bg-surface p-1 shadow-md sm:h-40 sm:w-40 md:h-44 md:w-44 transition-all duration-300 group-hover:border-accent/60 group-hover:scale-[1.02]">
+              <div className="relative h-36 w-36 md:h-44 md:w-44 overflow-hidden rounded-full border-2 border-border-strong bg-surface p-1 shadow-md transition-all duration-300 group-hover:border-accent/60 group-hover:scale-[1.02]">
                 <img
                   src="/avatar.png"
                   alt={personal.name}

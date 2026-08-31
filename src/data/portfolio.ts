@@ -105,6 +105,11 @@ export const education = [
   },
 ] as const;
 
+export interface ProjectLink {
+  label: string;
+  url: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -121,6 +126,7 @@ export interface Project {
   challenges: string[];
   github: string;
   demo?: string | null;
+  demoLinks?: ProjectLink[];
 }
 
 export const projects: Project[] = [
@@ -168,13 +174,17 @@ export const projects: Project[] = [
       "Real-time driver dispatch state management",
     ],
     github: "https://github.com/MrutyunjayaSenapati/foodygo",
-    demo: null,
+    demo: "https://foodygo-admin-dashboard.vercel.app/",
+    demoLinks: [
+      { label: "Admin Dashboard", url: "https://foodygo-admin-dashboard.vercel.app/" },
+      { label: "Merchant Portal", url: "https://foodygo-restaurant-dashboard.vercel.app/" },
+    ],
   },
   {
     id: "chatapp",
     title: "ChatApp",
     tagline: "Real-Time WebSocket Messaging Application",
-    featured: false,
+    featured: true,
     category: "MERN Stack",
     status: "Live Project",
     database: "MongoDB",

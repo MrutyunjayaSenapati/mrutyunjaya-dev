@@ -75,10 +75,17 @@ export default function Projects() {
           {projects.map((project) => {
             const featured = project.featured;
             return (
-              <motion.button
+              <motion.div
                 key={project.id}
-                type="button"
+                role="button"
+                tabIndex={0}
                 onClick={() => setSelectedProject(project)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setSelectedProject(project);
+                  }
+                }}
                 onMouseEnter={() => setHoveredId(project.id)}
                 onFocus={() => setHoveredId(null)}
                 initial={reduced ? false : { opacity: 0, y: 22 }}
@@ -119,24 +126,53 @@ export default function Projects() {
                       {project.tagline}
                     </p>
 
-                    {/* Metadata & Stack */}
-                    <div className="mt-4 sm:mt-5 space-y-2 font-mono text-xs tracking-wide">
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-text-muted">
-                        <span className={project.status === "Live Project" ? "text-accent inline-flex items-center gap-1.5" : "text-text-secondary"}>
-                          {project.status === "Live Project" && (
-                            <span className="relative flex h-1.5 w-1.5">
-                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
-                              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
-                            </span>
-                          )}
-                          {project.status}
-                        </span>
-                        <span aria-hidden className="text-border-strong">/</span>
-                        <span className="text-text-secondary">{project.database}</span>
+                    {/* Actions & Tech Stack */}
+                    <div className="mt-4 sm:mt-5 space-y-3 font-mono text-xs tracking-wide">
+                      {/* Direct Links */}
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                        {project.github && (
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1 text-text-secondary hover:text-text hover:underline transition-colors py-0.5"
+                          >
+                            GitHub
+                            <ArrowUpRight className="h-3 w-3 text-text-muted" />
+                          </a>
+                        )}
+
+                        {project.demoLinks && project.demoLinks.length > 0 ? (
+                          project.demoLinks.map((link) => (
+                            <a
+                              key={link.url}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="inline-flex items-center gap-1 text-accent hover:underline transition-colors py-0.5"
+                            >
+                              {link.label}
+                              <ArrowUpRight className="h-3 w-3 text-accent" />
+                            </a>
+                          ))
+                        ) : project.demo ? (
+                          <a
+                            href={project.demo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1 text-accent hover:underline transition-colors py-0.5"
+                          >
+                            Demo
+                            <ArrowUpRight className="h-3 w-3 text-accent" />
+                          </a>
+                        ) : null}
                       </div>
 
                       {/* Tech stack badges */}
-                      <div className="flex flex-wrap gap-1.5 pt-1">
+                      <div className="flex flex-wrap gap-1.5">
                         {project.technologies.map((tech) => (
                           <span
                             key={tech}
@@ -158,7 +194,7 @@ export default function Projects() {
                     </div>
                   )}
                 </div>
-              </motion.button>
+              </motion.div>
             );
           })}
         </div>

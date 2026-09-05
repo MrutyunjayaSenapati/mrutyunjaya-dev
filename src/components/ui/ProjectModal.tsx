@@ -1,9 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ExternalLink } from "lucide-react";
 import githubIcon from "devicon/icons/github/github-original.svg";
 import type { Project } from "../../data/portfolio";
 import ProjectSchematic from "./ProjectSchematic";
+import IPhone15Pro from "./IPhone15Pro";
+import { PlantDoctorMobilePreview } from "./MobileAppPreviews";
 
 interface ProjectModalProps {
   project: Project | null;
@@ -24,13 +26,24 @@ function MetaLabel({ children }: { children: React.ReactNode }) {
 }
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
+  const [viewMode, setViewMode] = useState<"schematic" | "mobile">("schematic");
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const onCloseRef = useRef(onClose);
 
   useEffect(() => {
-    onCloseRef.current = onClose;
-  }, [onClose]);
+    setViewMode("schematic");
+  }, [project?.id]);
+
+  useEffect(() => {
+    if (project) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [project]);
 
   useEffect(() => {
     if (!project) return;
@@ -50,27 +63,28 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
-      const active = document.activeElement as HTMLElement | null;
 
-      if (e.shiftKey && (active === first || !dialog.contains(active))) {
+      if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
-      } else if (!e.shiftKey && (active === last || !dialog.contains(active))) {
+      } else if (!e.shiftKey && document.activeElement === last) {
         e.preventDefault();
         first.focus();
       }
     };
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    dialog?.focus();
     document.addEventListener("keydown", handleKeyDown);
-
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousOverflow;
-      previouslyFocusedRef.current?.focus();
     };
+  }, [project]);
+
+  useEffect(() => {
+    if (project && dialogRef.current) {
+      dialogRef.current.focus();
+    } else if (!project && previouslyFocusedRef.current) {
+      previouslyFocusedRef.current.focus();
+    }
   }, [project]);
 
   return (
@@ -84,7 +98,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={onClose}
-            className="fixed inset-0 bg-bg/85"
+            className="fixed inset-0 bg-black/90 backdrop-blur-md"
           />
 
           {/* Dialog */}
@@ -103,15 +117,52 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             {/* Close */}
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-border bg-surface text-text-muted transition-colors hover:border-border-strong hover:text-text"
+              className="absolute right-4 top-4 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-border bg-surface text-text-muted transition-colors hover:border-border-strong hover:text-text"
               aria-label="Close project details"
             >
               <X className="h-4 w-4" />
             </button>
 
-            {/* Schematic header */}
+            {/* Visual Header / Switcher */}
             <div className="border-b border-border p-5 pr-14 sm:p-7 sm:pr-16">
-              <ProjectSchematic projectId={project.id} />
+              {project.id === "plant-doctor" && (
+                <div className="mb-4 flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setViewMode("schematic")}
+                    className={`rounded-md px-3 py-1.5 font-mono text-xs transition-colors cursor-pointer ${
+                      viewMode === "schematic"
+                        ? "bg-accent text-accent-ink font-medium"
+                        : "border border-border bg-surface text-text-secondary hover:text-text"
+                    }`}
+                  >
+                    System Architecture
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode("mobile")}
+                    className={`rounded-md px-3 py-1.5 font-mono text-xs transition-colors cursor-pointer ${
+                      viewMode === "mobile"
+                        ? "bg-accent text-accent-ink font-medium"
+                        : "border border-border bg-surface text-text-secondary hover:text-text"
+                    }`}
+                  >
+                    App Interface
+                  </button>
+                </div>
+              )}
+
+              {viewMode === "schematic" || project.id !== "plant-doctor" ? (
+                <ProjectSchematic projectId={project.id} />
+              ) : (
+                <div className="flex justify-center py-2">
+                  <div className="w-[240px] sm:w-[280px] aspect-[433/882]">
+                    <IPhone15Pro>
+                      <PlantDoctorMobilePreview />
+                    </IPhone15Pro>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="p-5 sm:p-7">
@@ -206,7 +257,20 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     Repository
                   </a>
                 )}
-                {project.demo && (
+                {project.demoLinks && project.demoLinks.length > 0 ? (
+                  project.demoLinks.map((link) => (
+                    <a
+                      key={link.url}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2.5 font-mono text-xs uppercase tracking-[0.08em] text-text-secondary transition-colors hover:border-border-strong hover:text-text"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5 text-accent" />
+                      {link.label}
+                    </a>
+                  ))
+                ) : project.demo ? (
                   <a
                     href={project.demo}
                     target="_blank"
@@ -216,7 +280,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     <ExternalLink className="h-3.5 w-3.5" />
                     Live demo
                   </a>
-                )}
+                ) : null}
               </div>
             </div>
           </motion.div>

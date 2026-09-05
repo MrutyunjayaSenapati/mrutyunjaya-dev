@@ -9,15 +9,7 @@
 @import "@fontsource/space-grotesk/600.css";
 @import "@fontsource/space-grotesk/700.css";
 
-/*
-  Engineering logbook — dark-only editorial system.
-  Neutral ink scale, one signal-green accent, mono telemetry voice.
-*/
-@theme {
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-
+:root {
   --color-bg: #0b0b0a;
   --color-surface: #121211;
   --color-surface-elevated: #1a1a18;
@@ -31,6 +23,60 @@
   --color-accent-ink: #06220f;
   --color-accent-dim: rgba(74, 222, 128, 0.12);
   --color-danger: #fb7185;
+}
+
+html.light {
+  color-scheme: light;
+  --color-bg: #fbfbf9;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #f3f2ee;
+  --color-border: #e6e4dc;
+  --color-border-strong: #ccc9be;
+  --color-text: #141413;
+  --color-text-secondary: #5c5a53;
+  --color-text-muted: #8c897f;
+
+  --color-accent: #15803d;
+  --color-accent-ink: #ffffff;
+  --color-accent-dim: rgba(21, 128, 61, 0.12);
+  --color-danger: #e11d48;
+}
+
+html.dark {
+  color-scheme: dark;
+  --color-bg: #0b0b0a;
+  --color-surface: #121211;
+  --color-surface-elevated: #1a1a18;
+  --color-border: #262624;
+  --color-border-strong: #3a3a36;
+  --color-text: #eceae4;
+  --color-text-secondary: #a3a19a;
+  --color-text-muted: #706f68;
+
+  --color-accent: #4ade80;
+  --color-accent-ink: #06220f;
+  --color-accent-dim: rgba(74, 222, 128, 0.12);
+  --color-danger: #fb7185;
+}
+
+@theme {
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+  --color-text: var(--color-text);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+
+  --color-accent: var(--color-accent);
+  --color-accent-ink: var(--color-accent-ink);
+  --color-accent-dim: var(--color-accent-dim);
+  --color-danger: var(--color-danger);
 
   /* Fluid display scale */
   --text-hero: clamp(2.75rem, 1.2rem + 7.5vw, 6rem);
@@ -47,7 +93,6 @@
 }
 
 html {
-  color-scheme: dark;
   scroll-behavior: smooth;
   scroll-padding-top: 96px;
 }
@@ -105,6 +150,10 @@ h3,
 
 .tech-icon-mono {
   filter: invert(1) brightness(1.6);
+}
+
+html.light .tech-icon-mono {
+  filter: brightness(0.2);
 }
 
 @media (prefers-reduced-motion: reduce) {

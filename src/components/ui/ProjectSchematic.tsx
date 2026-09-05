@@ -3,13 +3,13 @@ interface SchematicProps {
 }
 
 const MONO = "JetBrains Mono, ui-monospace, monospace";
-const INK = "#0b0b0a";
-const SURFACE = "#141413";
-const ELEVATED = "#1d1d1b";
-const LINE = "#33332f";
-const MUTED = "#8a887f";
-const SECONDARY = "#c8c6be";
-const ACCENT = "#4ade80";
+const SURFACE = "var(--color-surface)";
+const ELEVATED = "var(--color-surface-elevated)";
+const LINE = "var(--color-border)";
+const MUTED = "var(--color-text-muted)";
+const SECONDARY = "var(--color-text-secondary)";
+const ACCENT = "var(--color-accent)";
+const ACCENT_INK = "var(--color-accent-ink)";
 
 function Node({
   x,
@@ -43,7 +43,7 @@ function Node({
         fontFamily={MONO}
         fontSize={9}
         letterSpacing={0.5}
-        fill={strong ? INK : SECONDARY}
+        fill={strong ? ACCENT_INK : SECONDARY}
       >
         {label}
       </text>
@@ -135,29 +135,34 @@ function PlantDoctorSchematic() {
 
 function FoodyGoSchematic() {
   const cx = 170;
-  const cy = 118;
+  const cy = 108;
   return (
     <Frame>
-      <text x={24} y={40} fontFamily={MONO} fontSize={9} letterSpacing={1} fill={MUTED}>
+      <text x={22} y={28} fontFamily={MONO} fontSize={8.5} letterSpacing={1} fill={MUTED}>
         TURBOREPO · 4 PORTALS · POSTGRESQL
       </text>
 
-      <Node x={cx - 75} y={cy - 15} w={150} label="Express · PostgreSQL" strong />
-
       {/* spokes */}
-      <line x1={cx} y1={cy - 15} x2={cx - 92} y2={52} stroke={LINE} strokeWidth={1} />
-      <line x1={cx} y1={cy - 15} x2={cx + 92} y2={52} stroke={LINE} strokeWidth={1} />
-      <line x1={cx} y1={cy + 15} x2={cx - 92} y2={184} stroke={LINE} strokeWidth={1} />
-      <line x1={cx} y1={cy + 15} x2={cx + 92} y2={184} stroke={LINE} strokeWidth={1} />
+      <line x1={cx - 30} y1={cy - 15} x2={88} y2={70} stroke={LINE} strokeWidth={1} />
+      <line x1={cx + 30} y1={cy - 15} x2={252} y2={70} stroke={LINE} strokeWidth={1} />
+      <line x1={cx - 30} y1={cy + 15} x2={88} y2={142} stroke={LINE} strokeWidth={1} />
+      <line x1={cx + 30} y1={cy + 15} x2={252} y2={142} stroke={LINE} strokeWidth={1} />
 
-      <Node x={cx - 148} y={37} w={112} label="Customer App" />
-      <Node x={cx + 36} y={37} w={112} label="Driver App" />
-      <Node x={cx - 148} y={169} w={112} label="Admin Web" />
-      <Node x={cx + 36} y={169} w={112} label="Merchant Web" />
+      {/* Top portals */}
+      <Node x={22} y={42} w={132} label="Customer App" />
+      <Node x={186} y={42} w={132} label="Driver App" />
 
-      <text x={24} y={196} fontFamily={MONO} fontSize={9} fill={MUTED}>
-        shared types · single repo
+      {/* Core Backend */}
+      <Node x={cx - 80} y={cy - 15} w={160} label="Express · PostgreSQL" strong />
+
+      {/* Bottom portals */}
+      <Node x={22} y={142} w={132} label="Admin Web" />
+      <Node x={186} y={142} w={132} label="Merchant Web" />
+
+      <text x={22} y={198} fontFamily={MONO} fontSize={8.5} fill={MUTED}>
+        shared types · single monorepo
       </text>
+      <circle cx={314} cy={195} r={3} fill={ACCENT} opacity={0.85} />
     </Frame>
   );
 }

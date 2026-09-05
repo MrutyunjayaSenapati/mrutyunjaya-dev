@@ -1,3 +1,4 @@
+import { ThemeProvider } from "./context/ThemeContext";
 import Navigation from "./components/layout/Navigation";
 import Footer from "./components/layout/Footer";
 import ScrollProgress from "./components/animations/ScrollProgress";
@@ -11,19 +12,21 @@ import Contact from "./components/sections/Contact";
 
 export default function App() {
   return (
-    <div className="relative min-h-screen bg-bg text-text">
-      <ScrollProgress />
-      <CaretSprite />
-      <Navigation />
-      <main>
-        <Hero />
-        <Projects />
-        <Skills />
-        <Experience />
-        <About />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <div className="relative min-h-screen bg-bg text-text transition-colors duration-300">
+        <ScrollProgress />
+        <CaretSprite />
+        <Navigation />
+        <main>
+          <Hero />
+          <Projects />
+          <Skills />
+          <Experience />
+          <About />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 }

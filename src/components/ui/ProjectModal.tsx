@@ -4,8 +4,7 @@ import { X, ExternalLink } from "lucide-react";
 import githubIcon from "devicon/icons/github/github-original.svg";
 import type { Project } from "../../data/portfolio";
 import ProjectSchematic from "./ProjectSchematic";
-import IPhone15Pro from "./IPhone15Pro";
-import { PlantDoctorMobilePreview } from "./MobileAppPreviews";
+import { PlantDoctorMobilePreview, FoodyGoMobilePreview, FoodyGoDriverMobilePreview } from "./MobileAppPreviews";
 
 interface ProjectModalProps {
   project: Project | null;
@@ -26,10 +25,12 @@ function MetaLabel({ children }: { children: React.ReactNode }) {
 }
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
-  const [viewMode, setViewMode] = useState<"schematic" | "mobile">("schematic");
+  const [viewMode, setViewMode] = useState<"schematic" | "mobile" | "driver">("schematic");
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const onCloseRef = useRef(onClose);
+
+  const hasMobilePreview = project?.id === "plant-doctor" || project?.id === "foodygo";
 
   useEffect(() => {
     setViewMode("schematic");
@@ -125,15 +126,15 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
             {/* Visual Header / Switcher */}
             <div className="border-b border-border p-5 pr-14 sm:p-7 sm:pr-16">
-              {project.id === "plant-doctor" && (
-                <div className="mb-4 flex flex-wrap items-center gap-2">
+              {hasMobilePreview && (
+                <div className="mb-4 flex flex-wrap items-center gap-1.5 rounded-lg border border-border bg-surface-elevated/70 p-1 w-fit max-w-full">
                   <button
                     type="button"
                     onClick={() => setViewMode("schematic")}
-                    className={`rounded-md px-3 py-1.5 font-mono text-xs transition-colors cursor-pointer ${
+                    className={`rounded-md px-2.5 sm:px-3 py-1.5 font-mono text-[11px] sm:text-xs transition-all cursor-pointer ${
                       viewMode === "schematic"
-                        ? "bg-accent text-accent-ink font-medium"
-                        : "border border-border bg-surface text-text-secondary hover:text-text"
+                        ? "bg-accent text-accent-ink font-medium shadow-xs"
+                        : "text-text-secondary hover:text-text"
                     }`}
                   >
                     System Architecture
@@ -141,27 +142,40 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   <button
                     type="button"
                     onClick={() => setViewMode("mobile")}
-                    className={`rounded-md px-3 py-1.5 font-mono text-xs transition-colors cursor-pointer ${
+                    className={`rounded-md px-2.5 sm:px-3 py-1.5 font-mono text-[11px] sm:text-xs transition-all cursor-pointer ${
                       viewMode === "mobile"
-                        ? "bg-accent text-accent-ink font-medium"
-                        : "border border-border bg-surface text-text-secondary hover:text-text"
+                        ? "bg-accent text-accent-ink font-medium shadow-xs"
+                        : "text-text-secondary hover:text-text"
                     }`}
                   >
-                    App Interface
+                    {project.id === "foodygo" ? "Customer App" : "App Interface"}
                   </button>
+                  {project.id === "foodygo" && (
+                    <button
+                      type="button"
+                      onClick={() => setViewMode("driver")}
+                      className={`rounded-md px-2.5 sm:px-3 py-1.5 font-mono text-[11px] sm:text-xs transition-all cursor-pointer ${
+                        viewMode === "driver"
+                          ? "bg-accent text-accent-ink font-medium shadow-xs"
+                          : "text-text-secondary hover:text-text"
+                      }`}
+                    >
+                      Driver App
+                    </button>
+                  )}
                 </div>
               )}
 
-              {viewMode === "schematic" || project.id !== "plant-doctor" ? (
+              {viewMode === "schematic" || !hasMobilePreview ? (
                 <ProjectSchematic projectId={project.id} />
+              ) : project.id === "foodygo" ? (
+                viewMode === "driver" ? (
+                  <FoodyGoDriverMobilePreview />
+                ) : (
+                  <FoodyGoMobilePreview />
+                )
               ) : (
-                <div className="flex justify-center py-2">
-                  <div className="w-[240px] sm:w-[280px] aspect-[433/882]">
-                    <IPhone15Pro>
-                      <PlantDoctorMobilePreview />
-                    </IPhone15Pro>
-                  </div>
-                </div>
+                <PlantDoctorMobilePreview />
               )}
             </div>
 

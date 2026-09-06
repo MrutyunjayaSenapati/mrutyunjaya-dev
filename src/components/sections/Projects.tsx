@@ -55,15 +55,6 @@ export default function Projects() {
           >
             Selected work<span className="text-accent">.</span>
           </motion.h2>
-          <motion.p
-            initial={reduced ? false : { opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="font-mono text-xs tracking-wide text-text-muted"
-          >
-            {projects.length} builds — mobile, monorepo, real-time
-          </motion.p>
         </div>
 
         {/* Editorial rows */}

@@ -2,6 +2,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import Navigation from "./components/layout/Navigation";
 import Footer from "./components/layout/Footer";
 import ScrollProgress from "./components/animations/ScrollProgress";
+import SpaceParticles from "./components/animations/SpaceParticles";
 import CaretSprite from "./components/ui/CaretSprite";
 import Hero from "./components/sections/Hero";
 import Projects from "./components/sections/Projects";
@@ -9,11 +10,14 @@ import Skills from "./components/sections/Skills";
 import Experience from "./components/sections/Experience";
 import About from "./components/sections/About";
 import Contact from "./components/sections/Contact";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export default function App() {
   return (
     <ThemeProvider>
       <div className="relative min-h-screen bg-bg text-text transition-colors duration-300">
+        <SpaceParticles />
         <ScrollProgress />
         <CaretSprite />
         <Navigation />
@@ -26,6 +30,8 @@ export default function App() {
           <Contact />
         </main>
         <Footer />
+        <Analytics />
+        <SpeedInsights />
       </div>
     </ThemeProvider>
   );

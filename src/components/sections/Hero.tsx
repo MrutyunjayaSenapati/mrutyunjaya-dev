@@ -55,9 +55,15 @@ export default function Hero() {
       aria-label="Introduction"
       className="relative flex min-h-[92vh] flex-col justify-center overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28"
     >
+      {/* Background Ambient Glow */}
+      <div 
+        aria-hidden="true" 
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_65%_50%_at_50%_20%,rgba(52,211,153,0.08),transparent)] z-0" 
+      />
+
       <motion.div
         style={reduced ? undefined : { y, opacity }}
-        className="relative mx-auto w-full max-w-4xl px-5 sm:px-8"
+        className="relative z-10 mx-auto w-full max-w-4xl px-5 sm:px-8"
       >
         {/* Top Section: Info + Sprite Avatar (Responsive: Row on mobile & desktop) */}
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
@@ -97,13 +103,13 @@ export default function Hero() {
             >
               <div>
                 <p className="font-mono text-sm font-semibold text-text sm:text-base">
-                  Software Engineer <span className="text-accent">@ Strivesteam</span>
+                  Mobile App &amp; Full-Stack Engineer
                 </p>
               </div>
 
               <div className="pt-0.5 text-sm text-text-secondary leading-relaxed sm:text-[15px]">
                 <p>
-                  Engineering production React Native mobile apps &amp; high-performance backend systems.
+                  Building high-performance mobile applications &amp; scalable production systems.
                 </p>
               </div>
             </motion.div>
